@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    database: mysql
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://54.64.93.73:3306/cnu_2017
+    username: cnu_2017
+    password: cnu_2017
+    validation-query: SELECT 1
+    test-on-borrow: true
+    driver-class-name: com.mysql.jdbc.Driver
