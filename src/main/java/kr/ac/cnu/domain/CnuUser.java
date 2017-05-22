@@ -13,7 +13,7 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
-public class CnuMember {
+public class CnuUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;

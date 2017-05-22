@@ -1,3 +1,4 @@
+
 spring:
   jpa:
     hibernate:
@@ -13,3 +14,19 @@ spring:
     validation-query: SELECT 1
     test-on-borrow: true
     driver-class-name: com.mysql.jdbc.Driver
+server:
+  port: 8000
+
+security:
+  oauth2:
+    client:
+      client-id: 188579878330277
+      client-secret: 5181d5706d38aa15be3bec6fa98b8c8d
+      access-token-uri: https://graph.facebook.com/oauth/access_token
+      user-authorization-uri: https://www.facebook.com/dialog/oauth
+      token-name: oauth_token
+      authentication-scheme: query
+      client-authentication-scheme: form
+    resource:
+      userInfoUri: https://graph.facebook.com/me
+
