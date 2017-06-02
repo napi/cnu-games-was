@@ -2,6 +2,9 @@ package kr.ac.cnu.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import kr.ac.cnu.annotation.CnuLogin;
+import kr.ac.cnu.configuration.UserContext;
+import kr.ac.cnu.configuration.WebConfig;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.facebook.FacebookAccessToken;
 import kr.ac.cnu.repository.UserRepository;
@@ -20,9 +23,9 @@ import java.util.Map;
  * Created by rokim on 2017. 5. 18..
  */
 @RestController
-@RequestMapping("")
+@RequestMapping("/example")
 @Slf4j
-public class HelloWorldController {
+public class ExampleController {
 
     @Autowired
     private FacebookClient facebookClient;
@@ -43,6 +46,7 @@ public class HelloWorldController {
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public Map<String, Object> post(@ApiIgnore CnuUser cnuUser) {
         System.out.println(cnuUser);
+        System.out.println(UserContext.getUser());
         Map<String, Object> map = new HashMap<>();
         map.put("cnu", cnuUser);
         return map;
@@ -57,10 +61,13 @@ public class HelloWorldController {
         return map;
     }
 
+
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    @CnuLogin
     public Map<String, String> hello() {
         String s = "Hello, World!!";
         log.info(s);
+        System.out.println(UserContext.getUser());
         Map<String, String> map = new HashMap<>();
 
         map.put("Message", s);

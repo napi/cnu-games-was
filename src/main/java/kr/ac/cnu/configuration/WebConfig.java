@@ -1,21 +1,30 @@
 package kr.ac.cnu.configuration;
 
+import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.domain.CnuUser;
-import kr.ac.cnu.restclient.FacebookClient;
+import kr.ac.cnu.domain.facebook.FacebookUser;
+import kr.ac.cnu.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -23,7 +32,10 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
+@Slf4j
 public class WebConfig extends WebMvcConfigurerAdapter {
+    @Autowired private UserRepository userRepository;
+    @Autowired private UserOperator userOperator;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -35,27 +47,29 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loginInterceptor()).excludePathPatterns("/swagger-ui.html*", "/**/webjars/**", "/console/**");
+    }
+
+    @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(facebookArgumentResolver());
+        argumentResolvers.add(loginArgumentResolver());
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/WEB-INF/resources/");
         registry
-                .addResourceHandler("**/**")
+                .addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry
-                .addResourceHandler("**/webjars/**")
+                .addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
     }
 
-    @Autowired
-    public FacebookClient facebookClient;
-
     @Bean
-    public HandlerMethodArgumentResolver facebookArgumentResolver() {
+    public HandlerMethodArgumentResolver loginArgumentResolver() {
         HandlerMethodArgumentResolver resolver = new HandlerMethodArgumentResolver() {
             @Override
             public boolean supportsParameter(MethodParameter methodParameter) {
@@ -64,15 +78,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
             @Override
             public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-                System.out.println("resolveArgument");
                 String accessToken = nativeWebRequest.getHeader("token");
-                System.out.println(accessToken);
 
-                String result = facebookClient.callFacebookProfile(accessToken);
+                FacebookUser facebookUser = userOperator.getCnuUserFromAccessToken(accessToken);
+                CnuUser cnuUser = findAndCreateCnuUser(facebookUser);
 
-                CnuUser cnuUser = new CnuUser();
-                cnuUser.setUserId(result);
-                System.out.println(result);
                 return cnuUser;
             }
         };
@@ -80,4 +90,43 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    @Bean
+    public HandlerInterceptor loginInterceptor() {
+        return new HandlerInterceptorAdapter() {
+            @Override
+            public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object obj) throws Exception {
+                if (obj instanceof HandlerMethod == false) {
+                    return true;
+                }
+
+                if (((HandlerMethod)obj).hasMethodAnnotation(CnuLogin.class)) {
+                    String accessToken = httpServletRequest.getHeader("token");
+
+                    FacebookUser facebookUser = userOperator.getCnuUserFromAccessToken(accessToken);
+
+                    if (facebookUser == null) {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                        return false;
+                    }
+
+                    CnuUser cnuUser = findAndCreateCnuUser(facebookUser);
+
+                    UserContext.setUser(cnuUser);
+                }
+
+                return true;
+            }
+        };
+    }
+
+    private CnuUser findAndCreateCnuUser(FacebookUser facebookUser) {
+        CnuUser cnuUser = userRepository.findByUserId(facebookUser.getUserId());
+        if (cnuUser == null) {
+            cnuUser = new CnuUser();
+            cnuUser.setUserId(facebookUser.getUserId());
+            cnuUser.setEmail(facebookUser.getEmail());
+            cnuUser = userRepository.save(cnuUser);
+        }
+        return cnuUser;
+    }
 }

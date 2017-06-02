@@ -20,4 +20,9 @@ public class CnuUser {
 
     @Column(unique = true)
     private String userId;
+
+    private String name;
+    private String email;
+    private String gender;
+    private String pictureUrl;
 }

@@ -42,11 +42,9 @@ public class SwaggerConfig {
     private Predicate<String> paths() {
         return or(
                 regex("/api.*"),
-                regex("/hello.*"),
-                regex("/cnu.*"),
+                regex("/example.*"),
                 regex("/health"),
-                regex("/info"),
-                regex("/.*")
+                regex("/info")
         );
     }
 
@@ -61,7 +59,6 @@ public class SwaggerConfig {
 
     private List<Parameter> parameterList() {
         List<Parameter> parameterList = new ArrayList<>();
-
 
         parameterList.add(new ParameterBuilder()
                 .name("token")
