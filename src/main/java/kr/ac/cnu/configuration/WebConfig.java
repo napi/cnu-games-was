@@ -125,6 +125,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             cnuUser = new CnuUser();
             cnuUser.setUserId(facebookUser.getUserId());
             cnuUser.setEmail(facebookUser.getEmail());
+            cnuUser.setPictureUrl(facebookUser.getPicture());
+            cnuUser.setName(facebookUser.getName());
+            cnuUser.setGender(facebookUser.getGender());
             cnuUser = userRepository.save(cnuUser);
         }
         return cnuUser;

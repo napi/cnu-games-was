@@ -1,6 +1,7 @@
 package kr.ac.cnu.restclient;
 
 import kr.ac.cnu.domain.facebook.FacebookAccessToken;
+import kr.ac.cnu.domain.facebook.FacebookUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -31,14 +32,14 @@ public class FacebookClient {
         return responseEntity.getBody();
     }
 
-    public String callFacebookProfile(String accessToken) {
+    public FacebookUser callFacebookProfile(String accessToken) {
         UriTemplate uriTemplate = new UriTemplate("https://graph.facebook.com/me?" +
                 "access_token={access-token}" +
-                "&fields=id,name,picture,email" +
+                "&fields=id,name,picture,email,gender" +
                 "&locale=ko_KR");
 
         URI uri = uriTemplate.expand(accessToken);
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+        ResponseEntity<FacebookUser> responseEntity = restTemplate.getForEntity(uri, FacebookUser.class);
 
         return responseEntity.getBody();
     }

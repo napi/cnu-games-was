@@ -22,7 +22,7 @@ public class WebConfigProfiles {
         return new UserOperator() {
             @Override
             public FacebookUser getCnuUserFromAccessToken(String accessToken) {
-                System.out.println("LOCAL!!");
+                log.info("LOCAL!!");
                 FacebookUser facebookUser = new FacebookUser();
                 facebookUser.setUserId(accessToken);
                 return facebookUser;
@@ -36,9 +36,9 @@ public class WebConfigProfiles {
         return new UserOperator() {
             @Override
             public FacebookUser getCnuUserFromAccessToken(String accessToken) {
-                System.out.println("DEV!!");
-                FacebookUser facebookUser = new FacebookUser();
-                facebookUser.setUserId(accessToken);
+                log.info("DEV!! : {}", accessToken);
+                FacebookUser facebookUser = facebookClient.callFacebookProfile(accessToken);
+                System.out.println(facebookUser);
                 return facebookUser;
             }
         };

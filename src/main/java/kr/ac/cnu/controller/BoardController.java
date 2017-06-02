@@ -32,7 +32,6 @@ public class BoardController {
     @Autowired private BoardRepository boardRepository;
     @Autowired private BoardService boardService;
 
-
     // TODO Delete This Method
 
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
