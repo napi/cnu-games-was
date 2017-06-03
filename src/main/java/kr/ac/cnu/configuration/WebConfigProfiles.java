@@ -25,6 +25,10 @@ public class WebConfigProfiles {
                 log.info("LOCAL!!");
                 FacebookUser facebookUser = new FacebookUser();
                 facebookUser.setUserId(accessToken);
+                facebookUser.setName(accessToken);
+                facebookUser.setGender("남성");
+                facebookUser.setEmail(accessToken + "@naver.com");
+                facebookUser.setPicture(null);
                 return facebookUser;
             }
         };
@@ -38,7 +42,6 @@ public class WebConfigProfiles {
             public FacebookUser getCnuUserFromAccessToken(String accessToken) {
                 log.info("DEV!! : {}", accessToken);
                 FacebookUser facebookUser = facebookClient.callFacebookProfile(accessToken);
-                System.out.println(facebookUser);
                 return facebookUser;
             }
         };

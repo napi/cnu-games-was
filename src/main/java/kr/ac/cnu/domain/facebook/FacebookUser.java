@@ -19,9 +19,17 @@ public class FacebookUser {
 
     @JsonProperty("picture")
     public void setPicture(Map<String, Object> map) {
-        Map<String, Object> data = (Map<String, Object>) map.get("data");
-        if (data != null) {
-            picture = (String) data.get("url");
+        if (map == null) {
+            picture = "";
+            return;
         }
+        Map<String, Object> data = (Map<String, Object>) map.get("data");
+
+        if (data == null) {
+            picture = "";
+            return;
+        }
+
+        picture = (String) data.get("url");
     }
 }

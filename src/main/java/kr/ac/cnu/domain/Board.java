@@ -2,6 +2,7 @@ package kr.ac.cnu.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.CascadeType;
@@ -24,8 +25,8 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = CnuUser.class)
-    @JoinColumn(name="user_id")
+    @ManyToOne(targetEntity = CnuUser.class)
+    @JoinColumn(name="user_idx")
     private CnuUser cnuUser;
 
     private String title;

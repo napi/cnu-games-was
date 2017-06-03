@@ -13,6 +13,7 @@ import kr.ac.cnu.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +34,6 @@ public class BoardController {
     @Autowired private BoardService boardService;
 
     // TODO Delete This Method
-
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
@@ -55,10 +55,11 @@ public class BoardController {
         board.setTitle(boardDTO.getTitle());
         board.setContents(boardDTO.getContents());
         board.setCreatedAt(new Date());
+        board.setUpdatedAt(new Date());
         boardRepository.save(board);
 
-        // TODO 이거 사용
-        boardService.insertBoard(cnuUser, boardDTO);
+//        // TODO 이거 사용
+//        boardService.insertBoard(cnuUser, boardDTO);
     }
 
     @CnuLogin
@@ -69,4 +70,14 @@ public class BoardController {
 
         return boardList;
     }
+
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/{idx}", method = RequestMethod.GET)
+    public Board seeBoard(@PathVariable int idx) {
+        Board board = boardRepository.findByIdx(idx);
+
+        return board;
+    }
+
 }

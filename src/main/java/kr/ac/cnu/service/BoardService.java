@@ -20,11 +20,11 @@ public class BoardService {
 
     public Board insertBoard(CnuUser cnuUser, BoardDTO boardDTO) {
         Board board = new Board();
+        board.setCnuUser(cnuUser);
         board.setTitle(boardDTO.getTitle());
         board.setContents(boardDTO.getContents());
         board.setCreatedAt(new Date());
-        board.setCnuUser(UserContext.getUser());
-
+        board.setUpdatedAt(new Date());
 
         return boardRepository.save(board);
     }
