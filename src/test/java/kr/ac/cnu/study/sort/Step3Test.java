@@ -7,17 +7,15 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by rokim on 2017. 6. 4..
  */
 public class Step3Test {
-    private List<Student> studentList;
+    private List<Student> list;
 
     @Before
     public void before() {
-        studentList = Arrays.asList(
+        list = Arrays.asList(
                 new Student("Robin", 100),
                 new Student("David", 50),
                 new Student("Ian", 80),
@@ -28,7 +26,6 @@ public class Step3Test {
 
     @Test
     public void 오름차순_테스트() {
-
     }
 
     @Test
