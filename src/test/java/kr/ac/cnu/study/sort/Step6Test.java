@@ -30,22 +30,6 @@ public class Step6Test {
 
     @Test
     public void Integer_오름차순_테스트() {
-        List<Integer> sortedList = Step6.sort(integerList, new Step6.Comp<Integer>() {
-            @Override
-            public boolean isSwap(Integer o1, Integer o2) {
-                if (o1 > o2) {
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        System.out.println(sortedList);
-    }
-
-    @Test
-    public void Integer_내림차순_테스트() {
-
     }
 
     @Test

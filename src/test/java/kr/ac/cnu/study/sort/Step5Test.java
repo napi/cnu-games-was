@@ -30,34 +30,18 @@ public class Step5Test {
 
     @Test
     public void Integer_오름차순_테스트() {
-        List<Integer> sortedList = Step5.sort(integerList, true, new Step5.Comp<Integer>() {
-            @Override
-            public boolean isSwap(Integer o1, Integer o2, boolean isAsc) {
-                if (isAsc && o1 > o2) {
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        System.out.println(sortedList);
-        for (int i = 0 ; i < sortedList.size() - 1 ; i++) {
-            assertTrue("오름차순", sortedList.get(i) < sortedList.get(i + 1));
-        }
     }
 
     @Test
     public void Integer_내림차순_테스트() {
-
     }
 
     @Test
-    public void Student_오름차순_테스트() {
+    public void Student_Grade_오름차순_테스트() {
     }
 
     @Test
-    public void Student_내림차순_테스트() {
-
+    public void Student_Grade_내림차순_테스트() {
     }
 
 }
