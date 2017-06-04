@@ -37,7 +37,7 @@ public class BoardController {
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void insertBoard(@ApiIgnore CnuUser cnuUser, @RequestBody Board board) {
+    public void createBoard(@ApiIgnore CnuUser cnuUser, @RequestBody Board board) {
         board.setCnuUser(cnuUser);
         boardRepository.save(board);
     }
@@ -46,7 +46,7 @@ public class BoardController {
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void insertBoard(@RequestBody BoardDTO boardDTO) {
+    public void createBoard(@RequestBody BoardDTO boardDTO) {
         CnuUser cnuUser = UserContext.getUser();
 
         // TODO 삭제 예정
@@ -74,7 +74,7 @@ public class BoardController {
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/{idx}", method = RequestMethod.GET)
-    public Board seeBoard(@PathVariable int idx) {
+    public Board findBoard(@PathVariable int idx) {
         Board board = boardRepository.findByIdx(idx);
 
         return board;
