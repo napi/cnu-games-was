@@ -10,15 +10,22 @@ import kr.ac.cnu.domain.facebook.FacebookAccessToken;
 import kr.ac.cnu.domain.facebook.FacebookUser;
 import kr.ac.cnu.repository.UserRepository;
 import kr.ac.cnu.restclient.FacebookClient;
+import kr.ac.cnu.service.ExampleService;
+import kr.ac.cnu.study.model.Student;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
@@ -31,28 +38,68 @@ import java.util.Map;
 @RequestMapping("/example")
 @Slf4j
 public class ExampleController {
-
     @Autowired
     private FacebookClient facebookClient;
 
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value = "/insert", method = RequestMethod.GET)
-    public CnuUser insert() {
-        CnuUser cnuUser = new CnuUser();
-        cnuUser.setUserId("ASDF");
-        return userRepository.save(cnuUser);
+    @Autowired
+    private ExampleService exampleService;
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index() {
+        // resouces/templates/{RETURN}.html 를 찾는다
+        return "index";
     }
 
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public Map<String, Object> post(@ApiIgnore CnuUser cnuUser) {
-        System.out.println(cnuUser);
-        System.out.println(UserContext.getUser());
-        Map<String, Object> map = new HashMap<>();
-        map.put("cnu", cnuUser);
-        return map;
+    @RequestMapping(value = "/board", method = RequestMethod.GET)
+    public String board(Model model) {
+        // {RETURN}.html 에 매핑할 attribute 정보를 넣는다.
+        model.addAttribute("boardList", exampleService.getDummyBoardList());
+
+        // resouces/templates/{RETURN}.html 를 찾는다
+        return "board";
+    }
+
+    @RequestMapping(value = "/facebook", method = RequestMethod.GET)
+    public String board() {
+        return "facebook";
+    }
+
+
+    @RequestMapping(value = "/helloWorld", method = RequestMethod.GET)
+    // Response 에 직접 value 를 set 한다.
+    @ResponseBody
+    public String helloWorld() {
+        return "Hello, World";
+    }
+
+    @RequestMapping(value = "/helloParam", method = RequestMethod.GET)
+    @ResponseBody
+    // URI 의 쿼리 파라미터를 넣는다.
+    public String helloParam(@RequestParam String param) {
+        return param;
+    }
+
+    @RequestMapping(value = "/helloPath/{path}", method = RequestMethod.GET)
+    @ResponseBody
+    // URI 의 path 를 파라미터로 사용한다.
+    public String helloPath(@PathVariable String path) {
+        // HttpMessageConverter 가 String 을 HTTP body 에 직접 value 를 넣어준다.
+        return path;
+    }
+
+    @RequestMapping(value = "/helloBody", method = RequestMethod.POST)
+    @ResponseBody
+    // POST 의 json 으로 된 request body 를 매핑하여 파라미터로 전달한다.
+    public Student helloBody(@RequestBody Student student) {
+        // Response 에 직접 value 를 set 한다.
+        // 이 경우 MappingJackson2HttpMessageConverter 가 Object 를 json 포맷으로 변경한다.
+
+        // TODO insert Student
+
+        return student;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -63,7 +110,7 @@ public class ExampleController {
 
     @ResponseBody
     @RequestMapping(value = "/helloMap", method = RequestMethod.GET)
-    public Map<String, String> hello() {
+    public Map<String, String> helloMap() {
         Map<String, String> map = new HashMap<>();
         String s = "Hello, World!!";
         map.put("Message", s);
@@ -80,6 +127,7 @@ public class ExampleController {
         return cnuUser;
     }
 
+    // WebConfig 의 Interceptor 부분을 참고
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @ResponseBody
@@ -88,16 +136,24 @@ public class ExampleController {
         return UserContext.getUser();
     }
 
+    @RequestMapping(value = "/facebook/{path}", method = RequestMethod.GET)
     @ResponseBody
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public FacebookUser user(String code) {
-        if (code == null || code.equals("")) {
-            throw new RuntimeException(
-                    "ERROR: Didn't get code parameter in callback.");
-        }
-
-        FacebookAccessToken facebookAccessToken = facebookClient.callFacebookAccessToken(code);
-        return facebookClient.callFacebookProfile(facebookAccessToken.getAccessToken());
-
+    public FacebookUser getCnuUser(@PathVariable String path) {
+        return facebookClient.callFacebookProfile(path);
     }
+
+//    Don't need to study
+//
+//    @ResponseBody
+//    @RequestMapping(value = "/user", method = RequestMethod.GET)
+//    public FacebookUser user(String code) {
+//        if (code == null || code.equals("")) {
+//            throw new RuntimeException(
+//                    "ERROR: Didn't get code parameter in callback.");
+//        }
+//
+//        FacebookAccessToken facebookAccessToken = facebookClient.callFacebookAccessToken(code);
+//        return facebookClient.callFacebookProfile(facebookAccessToken.getAccessToken());
+//
+//    }
 }
