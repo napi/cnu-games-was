@@ -1,13 +1,8 @@
 package kr.ac.cnu.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,14 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * Created by rokim on 2017. 5. 31..
+ * Created by rokim on 2017. 6. 5..
  */
 @Data
 @Entity
-public class Board {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
@@ -31,8 +27,12 @@ public class Board {
     @JoinColumn(name="user_idx")
     private CnuUser cnuUser;
 
-    private String title;
-    private String contents;
+    @NotNull
+    private int boardIdx;
+    private int parentIdx;
+    private int depth;
+
+    private String comment;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

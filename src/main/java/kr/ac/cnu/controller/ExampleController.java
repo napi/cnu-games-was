@@ -1,12 +1,9 @@
 package kr.ac.cnu.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
-import kr.ac.cnu.configuration.WebConfig;
 import kr.ac.cnu.domain.CnuUser;
-import kr.ac.cnu.domain.facebook.FacebookAccessToken;
 import kr.ac.cnu.domain.facebook.FacebookUser;
 import kr.ac.cnu.repository.UserRepository;
 import kr.ac.cnu.restclient.FacebookClient;
@@ -24,9 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
