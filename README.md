@@ -63,4 +63,9 @@
   * /napi/cnu-games-was 를 fork 따서 자신의 repository 로 가져온다.
   * 자신의 repository 에 있는 프로젝트를 clone 하여 local PC에 저장한다.
   * 자신의 PC에서 git remote add 명령으로 원본 프로젝트를 추가한다.
-    * git remote add upstream 
+    * git remote add upstream https://github.com/napi/cnu-games-was.git
+    * git remote -v 명령으로 origin 과 upstream 이 있는지 확인.
+  * 주기적으로 git pull upstream master 명령을 사용해서, upstream 과 싱크를 맞춰준다.
+  * conflict 가 발생하는 경우, 직접 해결하도록 한다.
+  * upstream 으로 PR은 누구나 날릴 수 있다. 각 조 조장에게 merge 권한을 부여하였으니, 조장에게 직접 merge 를 부탁한다.
+  * <중요> PR을 날릴땐 항상 prefix 로 [X조] 를 붙여준다.
