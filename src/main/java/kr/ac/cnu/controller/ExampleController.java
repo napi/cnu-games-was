@@ -1,6 +1,7 @@
 package kr.ac.cnu.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
 import kr.ac.cnu.domain.CnuUser;
@@ -63,22 +64,22 @@ public class ExampleController {
 
 
     @RequestMapping(value = "/helloWorld", method = RequestMethod.GET)
-    // Response 에 직접 value 를 set 한다.
     @ResponseBody
+    @ApiOperation("Response 에 직접 value 를 set 한다.")
     public String helloWorld() {
         return "Hello, World";
     }
 
     @RequestMapping(value = "/helloParam", method = RequestMethod.GET)
     @ResponseBody
-    // URI 의 쿼리 파라미터를 넣는다.
+    @ApiOperation("URI 의 쿼리 파라미터를 넣는다.")
     public String helloParam(@RequestParam String param) {
         return param;
     }
 
     @RequestMapping(value = "/helloPath/{path}", method = RequestMethod.GET)
     @ResponseBody
-    // URI 의 path 를 파라미터로 사용한다.
+    @ApiOperation("URI 의 path 를 파라미터로 사용한다.")
     public String helloPath(@PathVariable String path) {
         // HttpMessageConverter 가 String 을 HTTP body 에 직접 value 를 넣어준다.
         return path;
@@ -86,7 +87,7 @@ public class ExampleController {
 
     @RequestMapping(value = "/helloBody", method = RequestMethod.POST)
     @ResponseBody
-    // POST 의 json 으로 된 request body 를 매핑하여 파라미터로 전달한다.
+    @ApiOperation("POST 의 json 으로 된 request body 를 매핑하여 파라미터로 전달한다.")
     public Student helloBody(@RequestBody Student student) {
         // Response 에 직접 value 를 set 한다.
         // 이 경우 MappingJackson2HttpMessageConverter 가 Object 를 json 포맷으로 변경한다.
@@ -113,6 +114,7 @@ public class ExampleController {
 
     @ResponseBody
     @RequestMapping(value = "/helloUser", method = RequestMethod.GET)
+    @ApiOperation(value = "POST 의 json 으로 된 request body 를 매핑하여 파라미터로 전달한다.", response = CnuUser.class)
     public CnuUser helloUser() {
         CnuUser cnuUser = new CnuUser();
         cnuUser.setIdx(1);
