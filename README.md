@@ -50,6 +50,9 @@
 			* 내가 보낸 쪽지를 읽기 전에 삭제할 경우, 당사자는 해당 쪽지를 볼 수 없다. (Optioanl)
 		* 알림기능 (필수)
 			* 읽지 않은 쪽지의 갯수를 보여준다.
+* Local URL
+	* http://localhost:8000/console
+	* http://localhost:8000/swagger-ui.html
 * 완료조건
 	* 마감은 6/11 18:00 까지로 정한다.
 	* 상세 기능 대한 분배는 조별로 위임한다.
