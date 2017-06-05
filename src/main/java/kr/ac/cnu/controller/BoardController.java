@@ -48,18 +48,16 @@ public class BoardController {
     @ResponseStatus(HttpStatus.OK)
     public void createBoard(@RequestBody BoardDTO boardDTO) {
         CnuUser cnuUser = UserContext.getUser();
+        boardService.insertBoard(cnuUser, boardDTO);
+    }
 
-        // TODO 삭제 예정
-        Board board = new Board();
-        board.setCnuUser(cnuUser);
-        board.setTitle(boardDTO.getTitle());
-        board.setContents(boardDTO.getContents());
-        board.setCreatedAt(new Date());
-        board.setUpdatedAt(new Date());
-        boardRepository.save(board);
-
-//        // TODO 이거 사용
-//        boardService.insertBoard(cnuUser, boardDTO);
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteBoard(@PathVariable int idx){
+        CnuUser cnuUser = UserContext.getUser();
+        boardService.deleteBoard(cnuUser, idx);
     }
 
     @CnuLogin

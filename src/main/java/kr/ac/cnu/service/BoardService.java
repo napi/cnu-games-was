@@ -25,7 +25,14 @@ public class BoardService {
         board.setContents(boardDTO.getContents());
         board.setCreatedAt(new Date());
         board.setUpdatedAt(new Date());
+        board.setDel(false);
 
         return boardRepository.save(board);
+    }
+
+    public void deleteBoard(CnuUser cnuUser, int idx) {
+        Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
+        board.setDel(true);
+        boardRepository.save(board);
     }
 }

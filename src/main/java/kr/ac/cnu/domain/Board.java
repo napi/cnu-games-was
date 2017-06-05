@@ -38,4 +38,6 @@ public class Board {
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    private boolean isDel;
 }
