@@ -59,5 +59,8 @@
   * 잘 동작하던 코드에 오류가 발생하고 이를 강사가 알게 될 경우, 오류코드를 작성한 사람에게 email 및 trello 로 Noti 합니다. 
   * 만약 Noti 후 1시간 이내에 응답이 없을 경우 감점 처리 합니다. (따라서 새벽에 merge 하는 것은 자제 바랍니다.)
   * 잘 모르는 내용은 google 및 강사에게 문의해 주세요. 최대한 친절히 답해드립니다.
-  
-  
+* Git 사용방법
+  * /napi/cnu-games-was 를 fork 따서 자신의 repository 로 가져온다.
+  * 자신의 repository 에 있는 프로젝트를 clone 하여 local PC에 저장한다.
+  * 자신의 PC에서 git remote add 명령으로 원본 프로젝트를 추가한다.
+    * git remote add upstream 
