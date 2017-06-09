@@ -34,11 +34,11 @@ public class CommentController {
 
    @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteComment(@RequestBody int idx) {
+    public void deleteComment(@RequestBody CommentDTO commentDTO) {
 
-        commentService.deleteComment(idx);
+        commentService.deleteComment(commentDTO.getIdx());
     }
 
 }
