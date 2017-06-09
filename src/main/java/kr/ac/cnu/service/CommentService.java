@@ -39,6 +39,6 @@ public class CommentService {
         Comment comment = commentRepository.findByIdx(idx);
         comment.setParentIdx(0);
         comment.setBoardIdx(0);
-        commentRepository.save(comment);
+        commentRepository.delete(comment);
     }
 }
