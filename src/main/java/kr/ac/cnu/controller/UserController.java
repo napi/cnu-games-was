@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
 import kr.ac.cnu.domain.CnuUser;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
