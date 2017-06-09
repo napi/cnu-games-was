@@ -1,5 +1,6 @@
 package kr.ac.cnu.service;
 
+import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.Comment;
 import kr.ac.cnu.dto.CommentDTO;
@@ -34,7 +35,10 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public void deleteComment(CnuUser cnuUser, int idx){
-
+    public void deleteComment(int idx){
+        Comment comment = commentRepository.findByIdx(idx);
+        comment.setParentIdx(0);
+        comment.setBoardIdx(0);
+        commentRepository.save(comment);
     }
 }
