@@ -32,4 +32,13 @@ public class CommentController {
         commentService.insertComment(cnuUser, commentDTO);
     }
 
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteComment(@RequestBody int idx) {
+
+        commentService.deleteComment(idx);
+    }
+
 }
