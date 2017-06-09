@@ -30,7 +30,9 @@ public class CommentService {
             comment.setCnuUser(cnuUser);
             comment.setBoardIdx(commentDTO.getBoardIdx());
             comment.setParentIdx(commentDTO.getParentIdx());
-            comment.setDepth(1);
+            comment.setDepth(
+                    getParentDepth(commentDTO) + 1
+            );
             comment.setComment(commentDTO.getComment());
             comment.setCreatedAt(new Date());
             comment.setUpdatedAt(new Date());
@@ -39,6 +41,11 @@ public class CommentService {
         }else {
             return null;
         }
+    }
+
+    public void deleteComment(int idx){
+        Comment comment = commentRepository.findByIdx(idx);
+        commentRepository.delete(comment);
     }
 
     public boolean isCommentValidationRight(CommentDTO commentDTO) {
@@ -64,8 +71,7 @@ public class CommentService {
         }
     }
 
-    public void deleteComment(int idx){
-        Comment comment = commentRepository.findByIdx(idx);
-        commentRepository.delete(comment);
+    public int getParentDepth(CommentDTO commentDTO) {
+        return commentRepository.findByIdx(commentDTO.getParentIdx()).getDepth();
     }
 }
