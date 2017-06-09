@@ -44,7 +44,7 @@ public class CommentService {
     public boolean isCommentValidationRight(CommentDTO commentDTO) {
         if(isBoardNotExist(commentDTO)) {
             return false;
-        }else if(isChildAndParentCommantHasDifferentBoardIdx(commentDTO)) {
+        }else if(isChildAndParentCommentHasDifferentBoardIdx(commentDTO)) {
             return false;
         }else {
             return true;
@@ -55,7 +55,7 @@ public class CommentService {
         return !boardRepository.exists(commentDTO.getBoardIdx());
     }
 
-    public boolean isChildAndParentCommantHasDifferentBoardIdx(CommentDTO commentDTO) {
+    public boolean isChildAndParentCommentHasDifferentBoardIdx(CommentDTO commentDTO) {
         if(commentRepository.findByIdx(commentDTO.getParentIdx()).getBoardIdx()
                 != commentDTO.getBoardIdx()  ) {
             return true;
