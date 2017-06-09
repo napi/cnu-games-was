@@ -33,4 +33,8 @@ public class CommentService {
 
         return commentRepository.save(comment);
     }
+
+    public void deleteComment(CnuUser cnuUser, int idx){
+
+    }
 }
