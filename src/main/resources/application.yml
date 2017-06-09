@@ -47,7 +47,7 @@ facebook:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://54.64.93.73:3306/cnu_2017
+    url: jdbc:mysql://localhost:3306/cnu_2017
     username: cnu_2017
     password: cnu_2017
     validation-query: SELECT 1
