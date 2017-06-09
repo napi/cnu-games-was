@@ -37,8 +37,6 @@ public class CommentService {
 
     public void deleteComment(int idx){
         Comment comment = commentRepository.findByIdx(idx);
-        comment.setParentIdx(0);
-        comment.setBoardIdx(0);
         commentRepository.delete(comment);
     }
 }
