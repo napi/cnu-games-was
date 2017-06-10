@@ -9,7 +9,6 @@ import kr.ac.cnu.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Date;
 
@@ -20,9 +19,6 @@ import java.util.Date;
 public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
-
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid Request")
-    public class BadRequestException extends RuntimeException { }
 
     public Board insertBoard(CnuUser cnuUser, BoardDTO boardDTO) {
         Board board = new Board();
@@ -36,11 +32,11 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public void deleteBoard(CnuUser cnuUser, int idx) {
+    public Board deleteBoard(CnuUser cnuUser, int idx) {
         Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
-        if (board == null)
-            throw new BadRequestException();
+        if(board == null)
+            return null;
         board.setDel(true);
-        boardRepository.save(board);
+        return boardRepository.save(board);
     }
 }

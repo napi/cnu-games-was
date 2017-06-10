@@ -30,8 +30,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
-    @Autowired private BoardRepository boardRepository;
-    @Autowired private BoardService boardService;
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid Request")
+    public class BadRequestException extends RuntimeException {
+    }
+
+    @Autowired
+    private BoardRepository boardRepository;
+    @Autowired
+    private BoardService boardService;
 
     // TODO Delete This Method
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
@@ -55,9 +62,11 @@ public class BoardController {
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteBoard(@PathVariable int idx){
-        CnuUser cnuUser = UserContext.getUser();
-        boardService.deleteBoard(cnuUser, idx);
+    public void deleteBoard(@PathVariable int idx) {
+            CnuUser cnuUser = UserContext.getUser();
+            Board board = boardService.deleteBoard(cnuUser, idx);
+            if (board == null)
+                throw new BadRequestException();
     }
 
     @CnuLogin
