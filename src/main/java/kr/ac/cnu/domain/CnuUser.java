@@ -25,4 +25,6 @@ public class CnuUser {
     private String email;
     private String gender;
     private String pictureUrl;
+
+    private long point;
 }
