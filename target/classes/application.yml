@@ -1,0 +1,56 @@
+spring:
+  thymeleaf:
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    database: mysql
+    show-sql: true
+  datasource:
+    url: jdbc:h2:mem:cnu_2017
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+server:
+  port: 8000
+
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: 188579878330277
+#      client-secret: 5181d5706d38aa15be3bec6fa98b8c8d
+#      access-token-uri: https://graph.facebook.com/oauth/access_token
+#      user-authorization-uri: https://www.facebook.com/dialog/oauth
+#      token-name: oauth_token
+#      authentication-scheme: query
+#      client-authentication-scheme: header
+#    resource:
+#      userInfoUri: https://graph.facebook.com/me
+
+facebook:
+  client:
+    clientId: 188579878330277
+    clientSecret: 5181d5706d38aa15be3bec6fa98b8c8d
+    accessTokenUri: https://graph.facebook.com/oauth/access_token
+    userAuthorizationUri: https://www.facebook.com/dialog/oauth
+    tokenName: oauth_token
+    authenticationScheme: query
+    clientAuthenticationScheme: form
+  resource:
+    userInfoUri: https://graph.facebook.com/me
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://54.64.93.73:3306/cnu_2017
+    username: cnu_2017
+    password: cnu_2017
+    validation-query: SELECT 1
+    test-on-borrow: true
+    driver-class-name: com.mysql.jdbc.Driver
+
