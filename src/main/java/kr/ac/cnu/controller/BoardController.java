@@ -77,5 +77,9 @@ public class BoardController {
 
         return board;
     }
+    
+    public void editBoard(){
+    	
+    }
 
 }
