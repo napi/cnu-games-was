@@ -5,6 +5,8 @@ import kr.ac.cnu.domain.CnuUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by rokim on 2017. 5. 31..
  */

@@ -1,6 +1,7 @@
 package kr.ac.cnu.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -22,7 +24,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-public class Board {
+public class Board implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
