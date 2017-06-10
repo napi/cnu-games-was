@@ -1,14 +1,8 @@
 package kr.ac.cnu.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
