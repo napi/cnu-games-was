@@ -7,6 +7,7 @@ import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.dto.BoardDTO;
 import kr.ac.cnu.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,7 +17,8 @@ import java.util.Date;
  */
 @Service
 public class BoardService {
-    @Autowired private BoardRepository boardRepository;
+    @Autowired
+    private BoardRepository boardRepository;
 
     public Board insertBoard(CnuUser cnuUser, BoardDTO boardDTO) {
         Board board = new Board();
@@ -30,9 +32,11 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public void deleteBoard(CnuUser cnuUser, int idx) {
+    public Board deleteBoard(CnuUser cnuUser, int idx) {
         Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
+        if(board == null)
+            return null;
         board.setDel(true);
-        boardRepository.save(board);
+        return boardRepository.save(board);
     }
 }
