@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.ac.cnu.repository.MybatisRepositoryXml">
     <!-- CACHE 설정이 들어 있다.-->
-    <cache />
+    <!--<cache />-->
     <select id="selectBoardList" resultType="Board" parameterType="int">
         SELECT
           idx, title, contents

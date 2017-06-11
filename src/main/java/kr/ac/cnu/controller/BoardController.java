@@ -37,15 +37,6 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    // TODO Delete This Method
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void createBoard(@ApiIgnore CnuUser cnuUser, @RequestBody Board board) {
-        board.setCnuUser(cnuUser);
-        boardRepository.save(board);
-    }
-
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "", method = RequestMethod.POST)
