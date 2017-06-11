@@ -8,6 +8,7 @@ import kr.ac.cnu.configuration.WebConfig;
 import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.dto.BoardDTO;
+import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
-
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Invalid Request")
-    public class BadRequestException extends RuntimeException {
-    }
 
     @Autowired
     private BoardRepository boardRepository;
@@ -63,10 +60,11 @@ public class BoardController {
     @RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void deleteBoard(@PathVariable int idx) {
-            CnuUser cnuUser = UserContext.getUser();
-            Board board = boardService.deleteBoard(cnuUser, idx);
-            if (board == null)
-                throw new BadRequestException();
+        CnuUser cnuUser = UserContext.getUser();
+        Board board = boardService.deleteBoard(cnuUser, idx);
+        if (board == null) {
+            throw new BadRequestException();
+        }
     }
 
     @CnuLogin
