@@ -67,6 +67,7 @@
 * 커스텀 : 8조, 18조, 4조, (3조, 1조, 2조), 7조
 	* 8조 : https://github.com/201302482/-TEAM8-Black_Jack
 	* 7조 : https://github.com/dbrud951/five_poker
+	* 4조 : https://github.com/seong954t/bot_project
 
 * Local URL
 	* http://localhost:8000/console
