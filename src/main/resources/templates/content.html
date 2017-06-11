@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Content</title>
+</head>
+<body>
+<div>
+    <table width="80%" border="1" cellspacing="0" align="center">
+        <colgroup>
+            <col width="60px" />
+            <col width="" />
+            <col width="120px" />
+        </colgroup>
+        <thead>
+        <!-- LIST HEADER -->
+        <tr>
+            <th scope="col"><span>번호</span></th>
+            <th scope="col" class="title"><span>제목</span></th>
+            <th scope="col"><span>글쓴이</span></th>
+        </tr>
+        <!-- /LIST HEADER -->
+        </thead>
+
+        <tbody>
+        <tr th:each="board : ${boardView}">
+            <td th:text="${board.idx}">1</td>
+            <td th:text="${board.title}">Thymus Thymi</td>
+            <td th:text="${board.cnuUser.name}">12</td>
+        </tr>
+
+        <tr>
+            <th>내용</th>
+            <td>내용 예시입니다.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
