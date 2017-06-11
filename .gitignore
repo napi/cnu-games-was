@@ -12,7 +12,7 @@ target/
 ### IntelliJ IDEA ###
 .idea
 *.iws
-*.iml
+*.imi
 *.ipr
 
 ### NetBeans ###
@@ -22,3 +22,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/src/main/java/kr/ac/cnu/CnuGamesWasApplication.java
