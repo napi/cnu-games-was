@@ -56,14 +56,7 @@ public class ExampleController {
         // resouces/templates/{RETURN}.html 를 찾는다
         return "board";
     }
-
-    // 게시글 상세보기를 위해 추가한 RequestMapping
-    @RequestMapping(value = "/content", method = RequestMethod.GET)
-    public String content(Model model) {
-        model.addAttribute("boardList", exampleService.getDummyBoardList());
-        return "content";
-    }
-
+    
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
     public String board() {
         return "facebook";
