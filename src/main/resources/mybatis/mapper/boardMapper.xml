@@ -4,7 +4,7 @@
 <mapper namespace="kr.ac.cnu.repository.MybatisRepositoryXml">
     <!-- CACHE 설정이 들어 있다.-->
     <!--<cache />-->
-    <select id="selectBoardList" resultType="Board" parameterType="int">
+    <select id="selectBoardList" resultType="kr.ac.cnu.domain.Board" parameterType="int">
         SELECT
           idx, title, contents
         FROM
@@ -12,7 +12,7 @@
         LIMIT #{size}
     </select>
 
-    <insert id="insertBoard" parameterType="Board">
+    <insert id="insertBoard" parameterType="kr.ac.cnu.domain.Board">
         INSERT INTO BOARD
         (title, contents, createdAt, updatedAt)
         VALUES
