@@ -16,7 +16,7 @@
             <!-- LIST HEADER -->
             <tr>
                 <th scope="col"><span>번호</span></th>
-                <th scope="col" class="title" onclick="goPage()"><span>제목</span></th>
+                <th scope="col" class="title"><span>제목</span></th>
                 <th scope="col"><span>글쓴이</span></th>
             </tr>
             <!-- /LIST HEADER -->
@@ -27,17 +27,11 @@
             <tbody>
             <tr th:each="board : ${boardList}">
                 <td th:text="${board.idx}">1</td>
-                <td style="cursor:pointer;" onclick="goPage()" th:text="${board.title}">Thymus Thymi</td>
+                <td th:text="${board.title}">Thymus Thymi</td>
                 <td th:text="${board.cnuUser.name}">12</td>
             </tr>
             </tbody>
         </table>
     </div>
-
-    <script>
-        function goPage() {
-            location.href='content';
-        }
-    </script>
 </body>
 </html>
