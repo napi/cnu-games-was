@@ -56,7 +56,6 @@ public class ExampleController {
         // resouces/templates/{RETURN}.html 를 찾는다
         return "board";
     }
-    
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
     public String board() {
         return "facebook";
