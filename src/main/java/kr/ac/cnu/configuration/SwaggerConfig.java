@@ -43,6 +43,7 @@ public class SwaggerConfig {
         return or(
                 regex("/api.*"),
                 regex("/example.*"),
+                regex("/db.*"),
                 regex("/health"),
                 regex("/info")
         );

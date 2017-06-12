@@ -1,5 +1,6 @@
 package kr.ac.cnu.domain;
 
+import kr.ac.cnu.annotation.AesEncrypt;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -25,4 +26,6 @@ public class CnuUser {
     private String email;
     private String gender;
     private String pictureUrl;
+
+    private long point;
 }

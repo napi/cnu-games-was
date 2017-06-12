@@ -11,9 +11,9 @@
 	* issue 등록 -> 개발 -> PR -> review -> merge -> issue close  의 순서로 기능개발이 진행된다고 생각하시면 됩니다.
 * 게시판 기능을 담당하는 조가 5개라 너무 많은 것 같습니다. 1개조는 덧글쪽으로 옮겨오시기를 부탁드립니다.
 
-### Homework
+- - -
 
-* 커스텀 : 8조, 18조, 4조, (3조, 1조, 2조), 7조
+### Homework
 * 게시판 기능 (16조) (14조) (12조) (10조) (11조)
 	* 등록하기 (Robin)
 	* 수정하기 (필수)
@@ -64,6 +64,11 @@
 			* 내가 보낸 쪽지를 읽기 전에 삭제할 경우, 당사자는 해당 쪽지를 볼 수 없다. (Optioanl)
 		* 알림기능 (필수)
 			* 읽지 않은 쪽지의 갯수를 보여준다.
+* 커스텀 : 8조, 18조, 4조, (3조, 1조, 2조), 7조
+	* 8조 : https://github.com/201302482/-TEAM8-Black_Jack
+	* 7조 : https://github.com/dbrud951/five_poker
+	* 4조 : https://github.com/seong954t/bot_project
+
 * Local URL
 	* http://localhost:8000/console
 	* http://localhost:8000/swagger-ui.html

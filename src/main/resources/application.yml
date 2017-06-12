@@ -13,9 +13,14 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
 server:
   port: 8000
+
+application:
+  mybatis:
+    config-location: classpath:mybatis/mybatis-config.xml
+    mapper-locations: classpath:mybatis/mapper/*.xml
+    type-aliases-package: kr.ac.cnu.domain
 
 
 #security:
@@ -47,7 +52,7 @@ facebook:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://54.64.93.73:3306/cnu_2017
+    url: jdbc:mysql://localhost:3306/cnu_2017
     username: cnu_2017
     password: cnu_2017
     validation-query: SELECT 1
