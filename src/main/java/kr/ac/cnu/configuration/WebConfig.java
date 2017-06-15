@@ -42,8 +42,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "OPTIONS", "PUT", "DELETE")
-                .allowedHeaders("header1", "header2", "header3", "token")
-                .exposedHeaders("header1", "header2", "token");
+                .allowedHeaders("header1", "header2", "header3", "token", "Content-Type")
+                .exposedHeaders("header1", "header2", "token", "Content-Type");
     }
 
     @Override
