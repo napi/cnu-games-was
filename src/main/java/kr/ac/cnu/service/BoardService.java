@@ -34,7 +34,7 @@ public class BoardService {
 
     public Board deleteBoard(CnuUser cnuUser, int idx) {
         Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
-        if(board == null)
+        if(board == null || board.isDel())
             return null;
         board.setDel(true);
         return boardRepository.save(board);
