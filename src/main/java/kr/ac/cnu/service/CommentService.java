@@ -4,12 +4,16 @@ import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.Comment;
 import kr.ac.cnu.dto.CommentDTO;
+import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by rokim on 2017. 6. 5..
@@ -73,5 +77,25 @@ public class CommentService {
 
     public int getParentDepth(CommentDTO commentDTO) {
         return commentRepository.findByIdx(commentDTO.getParentIdx()).getDepth();
+    }
+
+    //코멘트 보기
+    public List<Comment> viewComment() {
+        List<Comment> commentList;
+        Comparator<Comment> comparator = new Comparator<Comment>() {
+
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                return o1.getIdx() - o2.getIdx();
+            }
+        };
+        commentList = commentRepository.findAll();
+
+        if(!commentList.isEmpty()) {
+            Collections.sort(commentList, comparator);
+            return commentList;
+        }else {
+            throw new BadRequestException();
+        }
     }
 }
