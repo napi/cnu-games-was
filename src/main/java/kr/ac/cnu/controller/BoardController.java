@@ -48,6 +48,15 @@ public class BoardController {
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void updateBoard(@PathVariable int idx, @RequestBody String contents) {
+        CnuUser cnuUser = UserContext.getUser();
+        boardService.updateBoard(cnuUser, idx, contents);
+    }
+
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void deleteBoard(@PathVariable int idx) {
