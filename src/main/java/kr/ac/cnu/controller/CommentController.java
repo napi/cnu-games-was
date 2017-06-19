@@ -44,8 +44,6 @@ public class CommentController {
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
         if(isRecommend) {
             commentService.recommendComment(idx);
-        }else {
-            throw new BadRequestException();
         }
     }
 }

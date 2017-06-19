@@ -31,6 +31,8 @@ public class Comment {
     private int boardIdx;
     private int parentIdx;
     private int depth;
+    private int goodCount;
+    private int badCount;
 
 
     private String comment;
