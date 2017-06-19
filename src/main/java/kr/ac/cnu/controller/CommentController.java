@@ -22,7 +22,6 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
     @Autowired private CommentService commentService;
-    @Autowired private BoardRepository boardRepository;
 
 
     @CnuLogin
@@ -49,7 +48,8 @@ public class CommentController {
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/{boardIdx}", method = RequestMethod.GET)
     public List<Comment> viewEntireComment(@PathVariable("boardIdx") int boardIdx) {
-        Board board = boardRepository.findByIdx(boardIdx);
+        BoardController boardController = new BoardController();
+        Board board = boardController.findBoard(boardIdx);
 
         return commentService.viewComment(board.getIdx());
     }
