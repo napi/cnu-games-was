@@ -47,21 +47,8 @@ public class BoardService {
     }
 
     public boolean likeBoard(CnuUser cnuUser, int idx) {
-        Board board = boardRepository.findByIdx(idx);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date userDate=null;
-        Date currentDate=null;
-        try {
-            userDate = dateFormat.parse(dateFormat.format(cnuUser.getLikeAt()));
-            currentDate = dateFormat.parse(dateFormat.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (userDate.compareTo(currentDate)<0){
-            cnuUser.setLikeAt(new Date());
-            cnuUser.setCountDisLike(0);
-            cnuUser.setCountLike(0);
-        }
+        Board board = initBoardCondition(cnuUser, idx);
+        
         if (cnuUser.getCountLike()<3){
             board.setCountLike(board.getCountLike()+1);
             cnuUser.setCountLike(cnuUser.getCountLike()+1);
@@ -73,8 +60,21 @@ public class BoardService {
         }
     }
 
-
     public boolean disLikeBoard(CnuUser cnuUser, int idx) {
+        Board board = initBoardCondition(cnuUser, idx);
+
+        if (cnuUser.getCountDisLike()<3){
+            board.setCountDisLike(board.getCountDisLike()+1);
+            cnuUser.setCountDisLike(cnuUser.getCountDisLike()+1);
+            boardRepository.save(board);
+            userRepository.save(cnuUser);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Board initBoardCondition(CnuUser cnuUser, int idx) {
         Board board = boardRepository.findByIdx(idx);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -91,15 +91,6 @@ public class BoardService {
             cnuUser.setCountDisLike(0);
             cnuUser.setCountLike(0);
         }
-
-        if (cnuUser.getCountDisLike()<3){
-            board.setCountDisLike(board.getCountDisLike()+1);
-            cnuUser.setCountDisLike(cnuUser.getCountDisLike()+1);
-            boardRepository.save(board);
-            userRepository.save(cnuUser);
-            return true;
-        }else{
-            return false;
-        }
+        return board;
     }
 }
