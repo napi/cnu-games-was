@@ -43,9 +43,9 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
         if(isRecommend) {
-
+            commentService.recommendComment(idx);
         }else {
-
+            throw new BadRequestException();
         }
     }
 }
