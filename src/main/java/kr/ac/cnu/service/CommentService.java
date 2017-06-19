@@ -76,4 +76,8 @@ public class CommentService {
     public int getParentDepth(CommentDTO commentDTO) {
         return commentRepository.findByIdx(commentDTO.getParentIdx()).getDepth();
     }
+
+    public void recommendComment(int idx) {
+
+    }
 }
