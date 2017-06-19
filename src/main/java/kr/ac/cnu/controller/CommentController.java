@@ -62,4 +62,13 @@ public class CommentController {
         commentService.deleteComment(commentDTO.getIdx());
     }
 
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
+        if(isRecommend) {
+            commentService.recommendComment(idx);
+        }
+    }
 }
