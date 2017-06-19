@@ -42,6 +42,10 @@ public class CommentController {
     @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
-    
+        if(isRecommend) {
+
+        }else {
+
+        }
     }
 }
