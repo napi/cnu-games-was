@@ -36,13 +36,13 @@ public class BoardService {
         Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
         if(board == null || board.isDel())
             return null;
-        if(board.getCnuUser() == cnuUser) {
-            board.setContents(contents);
-            board.setUpdatedAt(new Date());
-            board.setDel(false);
-            return boardRepository.save(board);
-        }
-        return null;
+
+        board.setContents(contents);
+        board.setUpdatedAt(new Date());
+        board.setDel(false);
+
+        return boardRepository.save(board);
+        
     }
 
     public Board deleteBoard(CnuUser cnuUser, int idx) {
