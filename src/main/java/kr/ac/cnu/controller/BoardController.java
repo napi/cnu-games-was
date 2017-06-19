@@ -58,6 +58,33 @@ public class BoardController {
         }
     }
 
+
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/like/{idx}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public void likeBoard(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
+        boolean can = boardService.likeBoard(cnuUser, idx);
+        if (can == false) {
+            throw new BadRequestException();
+        }
+
+    }
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/dis/{idx}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public void disLikeBoard(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
+        boolean can = boardService.disLikeBoard(cnuUser, idx);
+        if (can == false) {
+            throw new BadRequestException();
+        }
+
+    }
+
+
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "", method = RequestMethod.GET)
