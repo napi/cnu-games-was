@@ -16,8 +16,10 @@ import java.util.Date;
  */
 @Service
 public class CommentService {
-    @Autowired private CommentRepository commentRepository;
-    @Autowired private BoardRepository boardRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private BoardRepository boardRepository;
 
     public Comment insertComment(CnuUser cnuUser, CommentDTO commentDTO) {
         // TODO Validation 체크 하는 부분이 빠져 있다
@@ -25,7 +27,7 @@ public class CommentService {
         // parent comment 가 같은 board의 Idx 값을 가지는지,
         // depth 는 parentComment 의 depth +1 로 되어야 하는지 등등.
 
-        if(isCommentValidationRight(commentDTO)) {
+        if (isCommentValidationRight(commentDTO)) {
             Comment comment = new Comment();
             comment.setCnuUser(cnuUser);
             comment.setBoardIdx(commentDTO.getBoardIdx());
@@ -38,22 +40,22 @@ public class CommentService {
             comment.setUpdatedAt(new Date());
 
             return commentRepository.save(comment);
-        }else {
+        } else {
             return null;
         }
     }
 
-    public void deleteComment(int idx){
+    public void deleteComment(int idx) {
         Comment comment = commentRepository.findByIdx(idx);
         commentRepository.delete(comment);
     }
 
     public boolean isCommentValidationRight(CommentDTO commentDTO) {
-        if(isBoardNotExist(commentDTO)) {
+        if (isBoardNotExist(commentDTO)) {
             return false;
-        }else if(isChildAndParentCommentHasDifferentBoardIdx(commentDTO)) {
+        } else if (isChildAndParentCommentHasDifferentBoardIdx(commentDTO)) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
@@ -63,10 +65,10 @@ public class CommentService {
     }
 
     public boolean isChildAndParentCommentHasDifferentBoardIdx(CommentDTO commentDTO) {
-        if(commentRepository.findByIdx(commentDTO.getParentIdx()).getBoardIdx()
-                != commentDTO.getBoardIdx()  ) {
+        if (commentRepository.findByIdx(commentDTO.getParentIdx()).getBoardIdx()
+                != commentDTO.getBoardIdx()) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

@@ -32,6 +32,7 @@ public class Comment {
     private int parentIdx;
     private int depth;
 
+
     private String comment;
 
     @Temporal(TemporalType.TIMESTAMP)
