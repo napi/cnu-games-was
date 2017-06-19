@@ -99,7 +99,9 @@ public class BoardController {
     @RequestMapping(value = "/{idx}", method = RequestMethod.GET)
     public Board findBoard(@PathVariable int idx) {
         Board board = boardRepository.findByIdx(idx);
-
+        if (board == null) {
+            throw new BadRequestException();
+        }
         return board;
     }
     
