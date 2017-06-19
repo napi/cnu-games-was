@@ -30,12 +30,16 @@ public class CommentController {
     }
 
     @CnuLogin
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @ApiImplicitParam(name = "token", value = " client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
-        if(isRecommend) {
-            commentService.recommendComment(idx);
+        boolean isCommentEmpty = false;
+        if(isRecommend ) {
+            isCommentEmpty = commentService.recommendComment(idx);
+            if(isCommentEmpty == false) {
+                throw new BadRequestException();
+            }
         }else {
             throw new BadRequestException();
         }
@@ -60,15 +64,5 @@ public class CommentController {
     public void deleteComment(@RequestBody CommentDTO commentDTO) {
 
         commentService.deleteComment(commentDTO.getIdx());
-    }
-
-    @CnuLogin
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
-        if(isRecommend) {
-            commentService.recommendComment(idx);
-        }
     }
 }

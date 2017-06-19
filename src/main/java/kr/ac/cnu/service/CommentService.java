@@ -52,14 +52,25 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public void recommendComment(int idx){
+    public boolean recommendComment(int idx){
         Comment comment = commentRepository.findByIdx(idx);
-        comment.setGoodCount(comment.getGoodCount()+1);
+        if(comment == null) {
+            return false;
+        }else {
+            comment.setGoodCount(comment.getGoodCount() + 1);
+            return true;
+        }
+
     }
 
-    public void noRecommendComment(int idx){
+    public boolean noRecommendComment(int idx){
         Comment comment = commentRepository.findByIdx(idx);
-        comment.setBadCount(comment.getBadCount()+1);
+        if(comment == null) {
+            return false;
+        }else {
+            comment.setBadCount(comment.getBadCount() + 1);
+            return true;
+        }
     }
 
     public boolean isCommentValidationRight(CommentDTO commentDTO) {
