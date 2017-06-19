@@ -38,6 +38,7 @@ public class CommentController {
     }
 
     @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
 
 
 }
