@@ -23,12 +23,15 @@ public class WebConfigProfiles {
             @Override
             public FacebookUser getCnuUserFromAccessToken(String accessToken) {
                 log.info("LOCAL!!");
-                FacebookUser facebookUser = new FacebookUser();
-                facebookUser.setUserId(accessToken);
-                facebookUser.setName(accessToken);
-                facebookUser.setGender("남성");
-                facebookUser.setEmail(accessToken + "@naver.com");
-                facebookUser.setPicture(null);
+                FacebookUser facebookUser = createFacebookUser(accessToken);
+                if (facebookUser == null) {
+                    facebookUser = new FacebookUser();
+                    facebookUser.setUserId(accessToken);
+                    facebookUser.setName(accessToken);
+                    facebookUser.setGender("남성");
+                    facebookUser.setEmail(accessToken + "@naver.com");
+                    facebookUser.setPicture(null);
+                }
                 return facebookUser;
             }
         };
@@ -41,9 +44,18 @@ public class WebConfigProfiles {
             @Override
             public FacebookUser getCnuUserFromAccessToken(String accessToken) {
                 log.info("DEV!! : {}", accessToken);
-                FacebookUser facebookUser = facebookClient.callFacebookProfile(accessToken);
-                return facebookUser;
+                return createFacebookUser(accessToken);
             }
         };
+    }
+
+    private FacebookUser createFacebookUser(String accessToken) {
+        FacebookUser facebookUser = null;
+        try {
+            facebookUser = facebookClient.callFacebookProfile(accessToken);
+        } catch (Exception e) {
+            log.error("Facebook Login fail [{}] : {}", accessToken, e.toString());
+        }
+        return facebookUser;
     }
 }
