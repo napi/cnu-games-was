@@ -80,16 +80,15 @@ public class CommentService {
     }
 
     //코멘트 보기
-    public List<Comment> viewComment() {
-        List<Comment> commentList;
-        Comparator<Comment> comparator = new Comparator<Comment>() {
+    public List<Comment> viewComment(int boardIdx) {
+        List<Comment> commentList = commentRepository.findAllByBoardIdx(boardIdx);
+        Comparator<Comment> comparator = new Comparator<Comment>(){
 
             @Override
             public int compare(Comment o1, Comment o2) {
-                return o1.getIdx() - o2.getIdx();
+                return o1.getIdx() < o1.getIdx() ? -1 : o1.getIdx() > o1.getIdx() ? 1:0;
             }
         };
-        commentList = commentRepository.findAllByBoardIdx();
 
         if(!commentList.isEmpty()) {
             Collections.sort(commentList, comparator);
