@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.ac.cnu.repository.MybatisRepositoryXml">
+    <!-- CACHE 설정이 들어 있다.-->
+    <!--<cache />-->
+    <select id="selectBoardList" resultType="kr.ac.cnu.domain.Board" parameterType="int">
+        SELECT
+          idx, title, contents
+        FROM
+          BOARD
+        LIMIT #{size}
+    </select>
+
+    <insert id="insertBoard" parameterType="kr.ac.cnu.domain.Board">
+        INSERT INTO BOARD
+        (title, contents, createdAt, updatedAt)
+        VALUES
+        (#{title}, #{contents}, NOW(), NOW())
+        <selectKey resultType="int" keyProperty="idx" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+</mapper>

@@ -25,6 +25,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,10 +41,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")
-                .allowedMethods("GET", "POST", "OPTION", "PUT", "DELETE")
-                .allowedHeaders("header1", "header2", "header3")
-                .exposedHeaders("header1", "header2");
+                .allowedOrigins("*")
+                .allowedMethods("GET", "POST", "OPTIONS", "PUT", "DELETE")
+                .allowedHeaders("header1", "header2", "header3", "token")
+                .exposedHeaders("header1", "header2", "token");
     }
 
     @Override
@@ -128,6 +129,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             cnuUser.setPictureUrl(facebookUser.getPicture());
             cnuUser.setName(facebookUser.getName());
             cnuUser.setGender(facebookUser.getGender());
+            cnuUser.setLikeAt(new Date());
             cnuUser = userRepository.save(cnuUser);
         }
         return cnuUser;
