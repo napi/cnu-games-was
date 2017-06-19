@@ -8,6 +8,7 @@ import kr.ac.cnu.configuration.WebConfig;
 import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.dto.BoardDTO;
+import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,17 +31,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
-    @Autowired private BoardRepository boardRepository;
-    @Autowired private BoardService boardService;
 
-    // TODO Delete This Method
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
-    public void createBoard(@ApiIgnore CnuUser cnuUser, @RequestBody Board board) {
-        board.setCnuUser(cnuUser);
-        boardRepository.save(board);
-    }
+    @Autowired
+    private BoardRepository boardRepository;
+    @Autowired
+    private BoardService boardService;
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
@@ -55,10 +50,40 @@ public class BoardController {
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteBoard(@PathVariable int idx){
+    public void deleteBoard(@PathVariable int idx) {
         CnuUser cnuUser = UserContext.getUser();
-        boardService.deleteBoard(cnuUser, idx);
+        Board board = boardService.deleteBoard(cnuUser, idx);
+        if (board == null) {
+            throw new BadRequestException();
+        }
     }
+
+
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/like/{idx}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public void likeBoard(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
+        boolean can = boardService.likeBoard(cnuUser, idx);
+        if (can == false) {
+            throw new BadRequestException();
+        }
+
+    }
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/dis/{idx}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public void disLikeBoard(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
+        boolean can = boardService.disLikeBoard(cnuUser, idx);
+        if (can == false) {
+            throw new BadRequestException();
+        }
+
+    }
+
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
@@ -76,6 +101,10 @@ public class BoardController {
         Board board = boardRepository.findByIdx(idx);
 
         return board;
+    }
+    
+    public void editBoard(){
+    	
     }
 
 }

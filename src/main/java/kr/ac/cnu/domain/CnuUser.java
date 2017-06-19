@@ -1,12 +1,10 @@
 package kr.ac.cnu.domain;
 
+import kr.ac.cnu.annotation.AesEncrypt;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by rokim on 2017. 5. 18..
@@ -25,4 +23,14 @@ public class CnuUser {
     private String email;
     private String gender;
     private String pictureUrl;
+
+    private long point;
+
+    private int countLike;
+
+    private int countDisLike;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date likeAt;
+
 }
