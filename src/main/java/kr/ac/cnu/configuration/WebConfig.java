@@ -4,6 +4,7 @@ import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.facebook.FacebookUser;
 import kr.ac.cnu.repository.UserRepository;
+import kr.ac.cnu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,16 +35,16 @@ import java.util.List;
 @EnableWebMvc
 @Slf4j
 public class WebConfig extends WebMvcConfigurerAdapter {
-    @Autowired private UserRepository userRepository;
     @Autowired private UserOperator userOperator;
+    @Autowired private UserService userService;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "OPTIONS", "PUT", "DELETE")
-                .allowedHeaders("header1", "header2", "header3", "token")
-                .exposedHeaders("header1", "header2", "token");
+                .allowedHeaders("header1", "header2", "header3", "token", "Content-Type")
+                .exposedHeaders("header1", "header2", "token", "Content-Type");
     }
 
     @Override
@@ -82,7 +82,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 String accessToken = nativeWebRequest.getHeader("token");
 
                 FacebookUser facebookUser = userOperator.getCnuUserFromAccessToken(accessToken);
-                CnuUser cnuUser = findAndCreateCnuUser(facebookUser);
+                CnuUser cnuUser = userService.findAndCreateCnuUser(facebookUser);
 
                 return cnuUser;
             }
@@ -110,7 +110,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                         return false;
                     }
 
-                    CnuUser cnuUser = findAndCreateCnuUser(facebookUser);
+                    CnuUser cnuUser = userService.findAndCreateCnuUser(facebookUser);
 
                     UserContext.setUser(cnuUser);
                 }
@@ -118,20 +118,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 return true;
             }
         };
-    }
-
-    private CnuUser findAndCreateCnuUser(FacebookUser facebookUser) {
-        CnuUser cnuUser = userRepository.findByUserId(facebookUser.getUserId());
-        if (cnuUser == null) {
-            cnuUser = new CnuUser();
-            cnuUser.setUserId(facebookUser.getUserId());
-            cnuUser.setEmail(facebookUser.getEmail());
-            cnuUser.setPictureUrl(facebookUser.getPicture());
-            cnuUser.setName(facebookUser.getName());
-            cnuUser.setGender(facebookUser.getGender());
-            cnuUser.setLikeAt(new Date());
-            cnuUser = userRepository.save(cnuUser);
-        }
-        return cnuUser;
     }
 }
