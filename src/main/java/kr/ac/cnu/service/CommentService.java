@@ -78,6 +78,7 @@ public class CommentService {
     }
 
     public void recommendComment(int idx) {
-
+        Comment comment = commentRepository.findByIdx(idx);
+        comment.setGoodCount(comment.getGoodCount()+1);
     }
 }
