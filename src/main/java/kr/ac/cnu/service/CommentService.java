@@ -36,6 +36,8 @@ public class CommentService {
             comment.setComment(commentDTO.getComment());
             comment.setCreatedAt(new Date());
             comment.setUpdatedAt(new Date());
+            comment.setGoodCount(0);
+            comment.setBadCount(0);
 
             return commentRepository.save(comment);
         }else {
@@ -46,6 +48,16 @@ public class CommentService {
     public void deleteComment(int idx){
         Comment comment = commentRepository.findByIdx(idx);
         commentRepository.delete(comment);
+    }
+
+    public void recommendComment(int idx){
+        Comment comment = commentRepository.findByIdx(idx);
+        comment.setGoodCount(comment.getGoodCount()+1);
+    }
+
+    public void noRecommendComment(int idx){
+        Comment comment = commentRepository.findByIdx(idx);
+        comment.setBadCount(comment.getBadCount()+1);
     }
 
     public boolean isCommentValidationRight(CommentDTO commentDTO) {
