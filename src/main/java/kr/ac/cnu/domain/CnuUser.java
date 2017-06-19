@@ -1,6 +1,5 @@
 package kr.ac.cnu.domain;
 
-import kr.ac.cnu.annotation.AesEncrypt;
 import lombok.Data;
 
 import javax.persistence.Column;

@@ -4,6 +4,7 @@ import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.facebook.FacebookUser;
 import kr.ac.cnu.repository.UserRepository;
+import kr.ac.cnu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,8 +35,8 @@ import java.util.List;
 @EnableWebMvc
 @Slf4j
 public class WebConfig extends WebMvcConfigurerAdapter {
-    @Autowired private UserRepository userRepository;
     @Autowired private UserOperator userOperator;
+    @Autowired private UserService userService;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -81,7 +82,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 String accessToken = nativeWebRequest.getHeader("token");
 
                 FacebookUser facebookUser = userOperator.getCnuUserFromAccessToken(accessToken);
-                CnuUser cnuUser = findAndCreateCnuUser(facebookUser);
+                CnuUser cnuUser = userService.findAndCreateCnuUser(facebookUser);
 
                 return cnuUser;
             }
@@ -109,7 +110,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                         return false;
                     }
 
-                    CnuUser cnuUser = findAndCreateCnuUser(facebookUser);
+                    CnuUser cnuUser = userService.findAndCreateCnuUser(facebookUser);
 
                     UserContext.setUser(cnuUser);
                 }
@@ -117,19 +118,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 return true;
             }
         };
-    }
-
-    private CnuUser findAndCreateCnuUser(FacebookUser facebookUser) {
-        CnuUser cnuUser = userRepository.findByUserId(facebookUser.getUserId());
-        if (cnuUser == null) {
-            cnuUser = new CnuUser();
-            cnuUser.setUserId(facebookUser.getUserId());
-            cnuUser.setEmail(facebookUser.getEmail());
-            cnuUser.setPictureUrl(facebookUser.getPicture());
-            cnuUser.setName(facebookUser.getName());
-            cnuUser.setGender(facebookUser.getGender());
-            cnuUser = userRepository.save(cnuUser);
-        }
-        return cnuUser;
     }
 }
