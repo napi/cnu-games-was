@@ -89,13 +89,13 @@ public class CommentService {
                 return o1.getIdx() - o2.getIdx();
             }
         };
-        commentList = commentRepository.findAll();
+        commentList = commentRepository.findAllByBoardIdx();
 
         if(!commentList.isEmpty()) {
             Collections.sort(commentList, comparator);
             return commentList;
         }else {
-            throw new BadRequestException();
+            return null;
         }
     }
 }

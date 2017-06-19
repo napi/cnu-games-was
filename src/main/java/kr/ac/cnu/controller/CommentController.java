@@ -9,11 +9,7 @@ import kr.ac.cnu.dto.CommentDTO;
 import kr.ac.cnu.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,9 +43,8 @@ public class CommentController {
     //전체보기
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Comment> viewEntireComment() {
+    @RequestMapping(value = "/{idx}", method = RequestMethod.GET)
+    public List<Comment> viewEntireComment(@PathVariable int boardIdx) {
 
         return commentService.viewComment();
     }
