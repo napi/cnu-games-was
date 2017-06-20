@@ -6,6 +6,8 @@ import kr.ac.cnu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by rokim on 2017. 5. 18..
  */
@@ -23,6 +25,9 @@ public class UserService {
             cnuUser.setPictureUrl(facebookUser.getPicture());
             cnuUser.setName(facebookUser.getName());
             cnuUser.setGender(facebookUser.getGender());
+            cnuUser.setLikeAt(new Date());
+            cnuUser.setCountDisLike(0);
+            cnuUser.setCountLike(0);
             cnuUser = userRepository.save(cnuUser);
         }
         return cnuUser;
