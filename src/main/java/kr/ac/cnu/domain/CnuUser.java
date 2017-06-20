@@ -26,5 +26,7 @@ public class CnuUser {
     private String gender;
     private String pictureUrl;
 
+    private int oneDayGoodAndBadCount;
+
     private long point;
 }

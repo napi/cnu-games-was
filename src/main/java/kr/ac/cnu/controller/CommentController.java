@@ -5,14 +5,11 @@ import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.dto.CommentDTO;
+import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by rokim on 2017. 6. 5..
@@ -32,7 +29,35 @@ public class CommentController {
         commentService.insertComment(cnuUser, commentDTO);
     }
 
-   @CnuLogin
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = " client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
+        CnuUser cnuUser = UserContext.getUser();
+
+        if(isRecommend ) {
+            commentService.recommendComment(idx, cnuUser);
+        }else {
+            throw new BadRequestException();
+        }
+    }
+
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = {"/idx", "/isNotRecommend"}, method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void noRecommendComment(@PathVariable int idx, @PathVariable boolean isNotRecommend) {
+        CnuUser cnuUser = UserContext.getUser();
+
+        if(isNotRecommend) {
+            commentService.noRecommendComment(idx, cnuUser);
+        }else {
+            throw new BadRequestException();
+        }
+    }
+
+    @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
@@ -40,5 +65,4 @@ public class CommentController {
 
         commentService.deleteComment(commentDTO.getIdx());
     }
-
 }
