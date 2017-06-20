@@ -4,6 +4,7 @@ import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.Comment;
 import kr.ac.cnu.dto.CommentDTO;
+import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,24 +53,22 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public boolean recommendComment(int idx){
+    public void recommendComment(int idx){
         Comment comment = commentRepository.findByIdx(idx);
         if(comment == null) {
-            return false;
+            throw new BadRequestException();
         }else {
             comment.setGoodCount(comment.getGoodCount() + 1);
-            return true;
         }
 
     }
 
-    public boolean noRecommendComment(int idx){
+    public void noRecommendComment(int idx){
         Comment comment = commentRepository.findByIdx(idx);
         if(comment == null) {
-            return false;
+            throw new BadRequestException();
         }else {
             comment.setBadCount(comment.getBadCount() + 1);
-            return true;
         }
     }
 
@@ -98,10 +97,5 @@ public class CommentService {
 
     public int getParentDepth(CommentDTO commentDTO) {
         return commentRepository.findByIdx(commentDTO.getParentIdx()).getDepth();
-    }
-
-    public void recommendComment(int idx) {
-        Comment comment = commentRepository.findByIdx(idx);
-        comment.setGoodCount(comment.getGoodCount()+1);
     }
 }

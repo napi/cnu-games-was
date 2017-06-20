@@ -34,12 +34,8 @@ public class CommentController {
     @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
-        boolean isCommentEmpty = false;
         if(isRecommend ) {
-            isCommentEmpty = commentService.recommendComment(idx);
-            if(isCommentEmpty == false) {
-                throw new BadRequestException();
-            }
+            commentService.recommendComment(idx);
         }else {
             throw new BadRequestException();
         }
