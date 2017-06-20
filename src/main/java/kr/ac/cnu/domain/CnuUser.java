@@ -1,7 +1,5 @@
 package kr.ac.cnu.domain;
 
-import kr.ac.cnu.annotation.AesEncrypt;
-import kr.ac.cnu.scheduler.OneDayUserScheduler;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -9,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by rokim on 2017. 5. 18..
@@ -16,10 +16,6 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class CnuUser {
-
-    public CnuUser() {
-        new OneDayUserScheduler(this);
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +30,7 @@ public class CnuUser {
     private String pictureUrl;
 
     private int oneDayGoodAndBadCount;
+    private Calendar lastestGoodAndBadAt;
 
     private long point;
 }

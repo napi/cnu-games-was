@@ -10,6 +10,7 @@ import kr.ac.cnu.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -101,10 +102,33 @@ public class CommentService {
     }
 
     public boolean isRecommendAndNoRecommendServiceRight(Comment comment, CnuUser cnuUser) {
+        Calendar calendar = Calendar.getInstance();
+
+        if(isCnuUserDayLowerThanNowDay(calendar, cnuUser.getLastestGoodAndBadAt())) {
+            cnuUser.setLastestGoodAndBadAt(calendar);
+            cnuUser.setOneDayGoodAndBadCount(0);
+        }
+
         if(comment != null && cnuUser.getOneDayGoodAndBadCount() < 5) {
             return true;
         }else {
             return false;
         }
+    }
+
+    public boolean isCnuUserDayLowerThanNowDay(Calendar nowCalendar, Calendar cnuUserCalendar) {
+        if(nowCalendar.get(Calendar.YEAR) > cnuUserCalendar.get(Calendar.YEAR) ) {
+            return true;
+        }
+
+        if(nowCalendar.get(Calendar.MONTH) > cnuUserCalendar.get(Calendar.MONTH)) {
+            return true;
+        }
+
+        if(nowCalendar.get(Calendar.DATE) > cnuUserCalendar.get(Calendar.DATE)) {
+            return true;
+        }
+
+        return false;
     }
 }
