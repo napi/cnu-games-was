@@ -86,7 +86,7 @@ public class CommentService {
 
             @Override
             public int compare(Comment o1, Comment o2) {
-                return o1.getIdx() < o1.getIdx() ? -1 : o1.getIdx() > o1.getIdx() ? 1:0;
+                return o1.getCreatedAt().before(o2.getCreatedAt()) ? -1 : o1.getCreatedAt().after(o2.getCreatedAt()) ? 1:0;
             }
         };
 
