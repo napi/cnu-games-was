@@ -1,6 +1,7 @@
 package kr.ac.cnu.domain;
 
 import kr.ac.cnu.annotation.AesEncrypt;
+import kr.ac.cnu.scheduler.OneDayUserScheduler;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -15,6 +16,11 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class CnuUser {
+
+    public CnuUser() {
+        new OneDayUserScheduler(this);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;

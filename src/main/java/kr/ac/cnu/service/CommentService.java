@@ -57,6 +57,7 @@ public class CommentService {
         Comment comment = commentRepository.findByIdx(idx);
         if(isRecommendAndNoRecommendServiceRight(comment, cnuUser)) {
             comment.setBadCount(comment.getGoodCount() + 1);
+            cnuUser.setOneDayGoodAndBadCount(cnuUser.getOneDayGoodAndBadCount()+1);
         }else {
             throw new BadRequestException();
         }
@@ -66,6 +67,7 @@ public class CommentService {
         Comment comment = commentRepository.findByIdx(idx);
         if(isRecommendAndNoRecommendServiceRight(comment, cnuUser)) {
             comment.setBadCount(comment.getBadCount() + 1);
+            cnuUser.setOneDayGoodAndBadCount(cnuUser.getOneDayGoodAndBadCount()+1);
         }else {
             throw new BadRequestException();
         }
