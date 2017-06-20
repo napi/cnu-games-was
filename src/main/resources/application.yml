@@ -58,4 +58,5 @@ spring:
     validation-query: SELECT 1
     test-on-borrow: true
     driver-class-name: com.mysql.jdbc.Driver
-
+logging:
+  file: /var/log/riot/cnu-games-was.log

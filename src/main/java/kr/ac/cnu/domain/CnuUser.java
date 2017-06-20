@@ -1,7 +1,5 @@
 package kr.ac.cnu.domain;
 
-import kr.ac.cnu.annotation.AesEncrypt;
-import kr.ac.cnu.scheduler.OneDayUserScheduler;
 import lombok.Data;
 
 import javax.persistence.Column;

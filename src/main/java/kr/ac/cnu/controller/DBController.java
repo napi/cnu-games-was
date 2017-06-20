@@ -73,7 +73,7 @@ public class DBController {
      * @return
      */
     @RequestMapping(value = "/jdbctemplate", method = RequestMethod.GET)
-    public List<Board> resttemplate(@RequestParam int size) {
+    public List<Board> jdbctemplate(@RequestParam int size) {
         RowMapper<Board> mapper = new BeanPropertyRowMapper<>(Board.class);
         Object[] params = new Object[] {size};
 
