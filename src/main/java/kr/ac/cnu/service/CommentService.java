@@ -81,7 +81,7 @@ public class CommentService {
 
     //코멘트 보기
     public List<Comment> viewComment(int boardIdx) {
-        List<Comment> commentList= commentRepository.findAllByBoardIdx(boardIdx);;
+        List<Comment> commentList = commentRepository.findAllByBoardIdx(boardIdx);
         Comparator<Comment> comparator = new Comparator<Comment>(){
 
             @Override

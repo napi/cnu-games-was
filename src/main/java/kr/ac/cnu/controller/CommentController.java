@@ -7,6 +7,7 @@ import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.Comment;
 import kr.ac.cnu.dto.CommentDTO;
+import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,10 @@ public class CommentController {
     @RequestMapping(value = "/{boardIdx}", method = RequestMethod.GET)
     public List<Comment> viewEntireComment(@PathVariable("boardIdx") int boardIdx) {
         Board board = boardRepository.findByIdx(boardIdx);
+
+        if (board == null) {
+            throw new BadRequestException();
+        }
 
         return commentService.viewComment(board.getIdx());
     }
