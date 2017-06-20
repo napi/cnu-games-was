@@ -34,8 +34,10 @@ public class CommentController {
     @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
+        CnuUser cnuUser = UserContext.getUser();
+
         if(isRecommend ) {
-            commentService.recommendComment(idx);
+            commentService.recommendComment(idx, cnuUser);
         }else {
             throw new BadRequestException();
         }
@@ -46,8 +48,10 @@ public class CommentController {
     @RequestMapping(value = {"/idx", "/isNotRecommend"}, method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void noRecommendComment(@PathVariable int idx, @PathVariable boolean isNotRecommend) {
+        CnuUser cnuUser = UserContext.getUser();
+
         if(isNotRecommend) {
-            commentService.noRecommendComment(idx);
+            commentService.noRecommendComment(idx, cnuUser);
         }else {
             throw new BadRequestException();
         }

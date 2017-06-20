@@ -53,22 +53,21 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public void recommendComment(int idx){
+    public void recommendComment(int idx, CnuUser cnuUser){
         Comment comment = commentRepository.findByIdx(idx);
-        if(comment == null) {
-            throw new BadRequestException();
+        if(isRecommendAndNoRecommendServiceRight(comment, cnuUser)) {
+            comment.setBadCount(comment.getGoodCount() + 1);
         }else {
-            comment.setGoodCount(comment.getGoodCount() + 1);
+            throw new BadRequestException();
         }
-
     }
 
-    public void noRecommendComment(int idx){
+    public void noRecommendComment(int idx, CnuUser cnuUser){
         Comment comment = commentRepository.findByIdx(idx);
-        if(comment == null) {
-            throw new BadRequestException();
-        }else {
+        if(isRecommendAndNoRecommendServiceRight(comment, cnuUser)) {
             comment.setBadCount(comment.getBadCount() + 1);
+        }else {
+            throw new BadRequestException();
         }
     }
 
@@ -97,5 +96,13 @@ public class CommentService {
 
     public int getParentDepth(CommentDTO commentDTO) {
         return commentRepository.findByIdx(commentDTO.getParentIdx()).getDepth();
+    }
+
+    public boolean isRecommendAndNoRecommendServiceRight(Comment comment, CnuUser cnuUser) {
+        if(comment != null && cnuUser.getOneDayGoodAndBadCount() < 5) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }
