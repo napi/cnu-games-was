@@ -1,10 +1,8 @@
 package kr.ac.cnu.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
-import kr.ac.cnu.configuration.WebConfig;
 import kr.ac.cnu.domain.Board;
 import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.dto.BoardDTO;
@@ -13,16 +11,8 @@ import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +56,33 @@ public class BoardController {
             throw new BadRequestException();
         }
     }
+
+
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/like/{idx}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public void likeBoard(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
+        boolean can = boardService.likeBoard(cnuUser, idx);
+        if (can == false) {
+            throw new BadRequestException();
+        }
+
+    }
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/dis/{idx}", method = RequestMethod.PATCH)
+    @ResponseStatus(HttpStatus.OK)
+    public void disLikeBoard(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
+        boolean can = boardService.disLikeBoard(cnuUser, idx);
+        if (can == false) {
+            throw new BadRequestException();
+        }
+
+    }
+
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
