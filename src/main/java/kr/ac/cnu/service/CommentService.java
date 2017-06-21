@@ -7,6 +7,7 @@ import kr.ac.cnu.dto.CommentDTO;
 import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.repository.CommentRepository;
+import kr.ac.cnu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class CommentService {
     private CommentRepository commentRepository;
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public Comment insertComment(CnuUser cnuUser, CommentDTO commentDTO) {
         // TODO Validation 체크 하는 부분이 빠져 있다
@@ -56,9 +59,12 @@ public class CommentService {
 
     public void recommendComment(int idx, CnuUser cnuUser){
         Comment comment = commentRepository.findByIdx(idx);
+
         if(isRecommendAndNoRecommendServiceRight(comment, cnuUser)) {
             comment.setBadCount(comment.getGoodCount() + 1);
             cnuUser.setOneDayGoodAndBadCount(cnuUser.getOneDayGoodAndBadCount()+1);
+            commentRepository.save(comment);
+            userRepository.save(cnuUser);
         }else {
             throw new BadRequestException();
         }
@@ -66,9 +72,12 @@ public class CommentService {
 
     public void noRecommendComment(int idx, CnuUser cnuUser){
         Comment comment = commentRepository.findByIdx(idx);
+
         if(isRecommendAndNoRecommendServiceRight(comment, cnuUser)) {
             comment.setBadCount(comment.getBadCount() + 1);
             cnuUser.setOneDayGoodAndBadCount(cnuUser.getOneDayGoodAndBadCount()+1);
+            commentRepository.save(comment);
+            userRepository.save(cnuUser);
         }else {
             throw new BadRequestException();
         }
@@ -107,6 +116,7 @@ public class CommentService {
         if(isCnuUserDayLowerThanNowDay(calendar, cnuUser.getLastestGoodAndBadAt())) {
             cnuUser.setLastestGoodAndBadAt(calendar);
             cnuUser.setOneDayGoodAndBadCount(0);
+            userRepository.save(cnuUser);
         }
 
         if(comment != null && cnuUser.getOneDayGoodAndBadCount() < 5) {

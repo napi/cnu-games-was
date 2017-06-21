@@ -31,7 +31,7 @@ public class CommentController {
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = " client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = {"/idx", "/isRecommend"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/{idx}/{isRecommend}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
         CnuUser cnuUser = UserContext.getUser();
@@ -39,21 +39,7 @@ public class CommentController {
         if(isRecommend ) {
             commentService.recommendComment(idx, cnuUser);
         }else {
-            throw new BadRequestException();
-        }
-    }
-
-    @CnuLogin
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = {"/idx", "/isNotRecommend"}, method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public void noRecommendComment(@PathVariable int idx, @PathVariable boolean isNotRecommend) {
-        CnuUser cnuUser = UserContext.getUser();
-
-        if(isNotRecommend) {
             commentService.noRecommendComment(idx, cnuUser);
-        }else {
-            throw new BadRequestException();
         }
     }
 
