@@ -35,7 +35,21 @@ public class CommentController {
         commentService.insertComment(cnuUser, commentDTO);
     }
 
-   @CnuLogin
+    @CnuLogin
+    @ApiImplicitParam(name = "token", value = " client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @RequestMapping(value = "/{idx}/{isRecommend}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
+        CnuUser cnuUser = UserContext.getUser();
+
+        if(isRecommend ) {
+            commentService.recommendComment(idx, cnuUser);
+        }else {
+            commentService.noRecommendComment(idx, cnuUser);
+        }
+    }
+
+    @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)

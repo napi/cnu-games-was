@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 @Entity
 public class CnuUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idx;
@@ -23,6 +24,9 @@ public class CnuUser {
     private String email;
     private String gender;
     private String pictureUrl;
+
+    private int oneDayGoodAndBadCount;
+    private Calendar lastestGoodAndBadAt;
 
     private long point;
 
