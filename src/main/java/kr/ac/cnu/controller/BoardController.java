@@ -61,10 +61,9 @@ public class BoardController {
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Board> findBoardList() {
-        List<Board> boardList = boardRepository.findAll();
-
-        return boardList;
+    public Page<Board> findBoardList(Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        return boardPage;
     }
 
     @CnuLogin
