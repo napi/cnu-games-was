@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by rokim on 2017. 6. 5..
@@ -140,5 +143,23 @@ public class CommentService {
         }
 
         return false;
+    }
+    //코멘트 보기
+    public List<Comment> viewComment(int boardIdx) {
+        List<Comment> commentList = commentRepository.findAllByBoardIdx(boardIdx);
+        Comparator<Comment> comparator = new Comparator<Comment>(){
+
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                return o1.getCreatedAt().before(o2.getCreatedAt()) ? -1 : o1.getCreatedAt().after(o2.getCreatedAt()) ? 1:0;
+            }
+        };
+
+        if(!commentList.isEmpty()) {
+            Collections.sort(commentList, comparator);
+            return commentList;
+        }else {
+            return null;
+        }
     }
 }

@@ -36,4 +36,6 @@ public class Board implements Serializable {
     private Date updatedAt;
 
     private boolean isDel;
+    private int countLike;
+    private int countDisLike;
 }
