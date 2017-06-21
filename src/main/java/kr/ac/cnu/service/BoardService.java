@@ -32,6 +32,19 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
+    public Board updateBoard(CnuUser cnuUser, int idx, String contents) {
+        Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
+        if(board == null || board.isDel())
+            return null;
+
+        board.setContents(contents);
+        board.setUpdatedAt(new Date());
+        board.setDel(false);
+
+        return boardRepository.save(board);
+        
+    }
+
     public Board deleteBoard(CnuUser cnuUser, int idx) {
         Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
         if(board == null || board.isDel())
