@@ -70,6 +70,6 @@ public class CommentController {
             throw new BadRequestException();
         }
 
-        return commentService.viewComment(boardIdx);
+        return commentService.viewComment(board);
     }
 }

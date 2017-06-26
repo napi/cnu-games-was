@@ -36,13 +36,13 @@ public class CommentService {
 
         Comment comment = new Comment();
         comment.setCnuUser(cnuUser);
-        comment.setBoardIdx(commentDTO.getBoardIdx());
-        comment.setParentIdx(commentDTO.getParentIdx());
-        int depth = 1;
-
+        comment.setParentBoard(boardRepository.findByIdxAndIsDel(commentDTO.getBoardIdx(), false));
         Comment parentComment = commentRepository.findByIdx(commentDTO.getParentIdx());
+
+        int depth = 1;
         if (parentComment != null) {
             depth += parentComment.getDepth();
+            comment.setParentComment(parentComment);
         }
 
         comment.setDepth(depth);
@@ -106,7 +106,7 @@ public class CommentService {
         }
 
         Comment parentComment = commentRepository.findByIdx(commentDTO.getParentIdx());
-        if (parentComment == null || parentComment.getBoardIdx() != commentDTO.getBoardIdx()) {
+        if (parentComment == null || parentComment.getParentBoard().getIdx() != commentDTO.getBoardIdx()) {
             return true;
         }
 
@@ -146,9 +146,10 @@ public class CommentService {
 
         return false;
     }
+
     //코멘트 보기
-    public List<Comment> viewComment(int boardIdx) {
-        List<Comment> commentList = commentRepository.findAllByBoardIdx(boardIdx);
+    public List<Comment> viewComment(Board parentBoard) {
+        List<Comment> commentList = commentRepository.findAllByParentBoard(parentBoard);
         Comparator<Comment> comparator = new Comparator<Comment>(){
 
             @Override
