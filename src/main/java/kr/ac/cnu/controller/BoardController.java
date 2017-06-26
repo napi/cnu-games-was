@@ -1,6 +1,7 @@
 package kr.ac.cnu.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
 import kr.ac.cnu.domain.Board;
@@ -10,10 +11,18 @@ import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Created by rokim on 2017. 5. 30..
@@ -85,10 +94,14 @@ public class BoardController {
 
 
     @CnuLogin
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = ""),
+            @ApiImplicitParam(name = "page", value = "Page Number", required = false, dataType = "integer", paramType = "query", defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "Page Size", required = false, dataType = "integer", paramType = "query", defaultValue = "10")
+    })
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Page<Board> findBoardList(Pageable pageable) {
-        Page<Board> boardPage = boardRepository.findAll(pageable);
+    public Page<Board> findBoardList(@ApiIgnore @PageableDefault(sort = {"idx"}, direction = Sort.Direction.DESC, size = 3)  Pageable pageable) {
+        Page<Board> boardPage = boardService.findBoards(pageable);
         return boardPage;
     }
 

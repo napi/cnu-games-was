@@ -115,9 +115,11 @@ public class CommentService {
 
     public boolean isRecommendAndNoRecommendServiceRight(Comment comment, CnuUser cnuUser) {
         Calendar calendar = Calendar.getInstance();
+        Calendar latestGoodAndBadCalendar = Calendar.getInstance();
+        latestGoodAndBadCalendar.setTime(cnuUser.getLastestGoodAndBadAt());
 
-        if(isCnuUserDayLowerThanNowDay(calendar, cnuUser.getLastestGoodAndBadAt())) {
-            cnuUser.setLastestGoodAndBadAt(calendar);
+        if(isCnuUserDayLowerThanNowDay(calendar, latestGoodAndBadCalendar)) {
+            cnuUser.setLastestGoodAndBadAt(calendar.getTime());
             cnuUser.setOneDayGoodAndBadCount(0);
             userRepository.save(cnuUser);
         }
