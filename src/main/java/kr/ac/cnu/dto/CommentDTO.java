@@ -7,8 +7,6 @@ import lombok.Data;
  */
 @Data
 public class CommentDTO {
-    private int idx;
-
     private int boardIdx;
     private int parentIdx;
 

@@ -25,7 +25,7 @@ public class BoardService {
     private UserRepository userRepository;
 
     public Page<Board> findBoards(Pageable pageable) {
-        return boardRepository.findByisDel(false, pageable);
+        return boardRepository.findByIsDel(false, pageable);
     }
 
     public Board insertBoard(CnuUser cnuUser, BoardDTO boardDTO) {
