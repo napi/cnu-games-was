@@ -100,7 +100,7 @@ public class BoardController {
             @ApiImplicitParam(name = "size", value = "Page Size", required = false, dataType = "integer", paramType = "query", defaultValue = "10")
     })
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Page<Board> findBoardList(@ApiIgnore @PageableDefault(sort = {"idx"}, direction = Sort.Direction.DESC, size = 3)  Pageable pageable) {
+    public Page<Board> findBoardList(@ApiIgnore @PageableDefault(sort = {"idx"}, direction = Sort.Direction.DESC, size = 10)  Pageable pageable) {
         Page<Board> boardPage = boardService.findBoards(pageable);
         return boardPage;
     }
