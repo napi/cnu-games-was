@@ -26,14 +26,13 @@ public class CnuUser {
     private String pictureUrl;
 
     private int oneDayGoodAndBadCount;
-    private Calendar lastestGoodAndBadAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastestGoodAndBadAt;
 
     private long point;
 
     private int countLike;
-
     private int countDisLike;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date likeAt;
 

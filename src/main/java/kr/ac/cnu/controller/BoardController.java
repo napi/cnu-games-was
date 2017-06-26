@@ -1,6 +1,9 @@
 package kr.ac.cnu.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiParam;
 import kr.ac.cnu.annotation.CnuLogin;
 import kr.ac.cnu.configuration.UserContext;
 import kr.ac.cnu.domain.Board;
@@ -10,6 +13,10 @@ import kr.ac.cnu.exception.BadRequestException;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,10 +92,14 @@ public class BoardController {
 
 
     @CnuLogin
-    @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = ""),
+            @ApiImplicitParam(name = "page", value = "Page Number", required = false, dataType = "integer", paramType = "query", defaultValue = "1"),
+            @ApiImplicitParam(name = "size", value = "Page Size", required = false, dataType = "integer", paramType = "query", defaultValue = "10")
+    })
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Page<Board> findBoardList(Pageable pageable) {
-        Page<Board> boardPage = boardRepository.findAll(pageable);
+        Page<Board> boardPage = boardService.findBoards(pageable);
         return boardPage;
     }
 

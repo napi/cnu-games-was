@@ -6,6 +6,8 @@ import kr.ac.cnu.dto.BoardDTO;
 import kr.ac.cnu.repository.BoardRepository;
 import kr.ac.cnu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -21,6 +23,10 @@ public class BoardService {
     private BoardRepository boardRepository;
     @Autowired
     private UserRepository userRepository;
+
+    public Page<Board> findBoards(Pageable pageable) {
+        return boardRepository.findByisDel(false, pageable);
+    }
 
     public Board insertBoard(CnuUser cnuUser, BoardDTO boardDTO) {
         Board board = new Board();
