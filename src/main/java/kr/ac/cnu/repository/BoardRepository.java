@@ -13,7 +13,8 @@ import java.util.List;
  * Created by rokim on 2017. 5. 31..
  */
 public interface BoardRepository extends JpaRepository<Board, Integer>{
-    Page<Board> findByisDel(boolean isDel, Pageable pageable);
+    Page<Board> findByIsDel(boolean isDel, Pageable pageable);
     Board findByIdx(int idx);
+    Board findByIdxAndIsDel(int idx, boolean isDel);
     Board findByIdxAndCnuUser(int idx, CnuUser cnuUser);
 }

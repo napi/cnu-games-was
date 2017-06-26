@@ -30,33 +30,33 @@ public class CommentService {
     private UserRepository userRepository;
 
     public Comment insertComment(CnuUser cnuUser, CommentDTO commentDTO) {
-        // TODO Validation 체크 하는 부분이 빠져 있다
-        // board 가 현재 존재하는지,
-        // parent comment 가 같은 board의 Idx 값을 가지는지,
-        // depth 는 parentComment 의 depth +1 로 되어야 하는지 등등.
-
-        if (isCommentValidationRight(commentDTO)) {
-            Comment comment = new Comment();
-            comment.setCnuUser(cnuUser);
-            comment.setBoardIdx(commentDTO.getBoardIdx());
-            comment.setParentIdx(commentDTO.getParentIdx());
-            comment.setDepth(
-                    getParentDepth(commentDTO) + 1
-            );
-            comment.setComment(commentDTO.getComment());
-            comment.setCreatedAt(new Date());
-            comment.setUpdatedAt(new Date());
-            comment.setGoodCount(0);
-            comment.setBadCount(0);
-
-            return commentRepository.save(comment);
-        } else {
-            return null;
+        if (!isCommentValidationRight(commentDTO)) {
+            throw new BadRequestException();
         }
+
+        Comment comment = new Comment();
+        comment.setCnuUser(cnuUser);
+        comment.setBoardIdx(commentDTO.getBoardIdx());
+        comment.setParentIdx(commentDTO.getParentIdx());
+        int depth = 1;
+
+        Comment parentComment = commentRepository.findByIdx(commentDTO.getParentIdx());
+        if (parentComment != null) {
+            depth += parentComment.getDepth();
+        }
+
+        comment.setDepth(depth);
+        comment.setComment(commentDTO.getComment());
+        comment.setCreatedAt(new Date());
+        comment.setUpdatedAt(new Date());
+        comment.setGoodCount(0);
+        comment.setBadCount(0);
+
+        return commentRepository.save(comment);
     }
 
-    public void deleteComment(int idx) {
-        Comment comment = commentRepository.findByIdx(idx);
+    public void deleteComment(int idx, CnuUser cnuUser) {
+        Comment comment = commentRepository.findByIdxAndCnuUser(idx, cnuUser);
         commentRepository.delete(comment);
     }
 
@@ -101,16 +101,16 @@ public class CommentService {
     }
 
     public boolean isChildAndParentCommentHasDifferentBoardIdx(CommentDTO commentDTO) {
-        if (commentRepository.findByIdx(commentDTO.getParentIdx()).getBoardIdx()
-                != commentDTO.getBoardIdx()) {
-            return true;
-        } else {
+        if (commentDTO.getParentIdx() == 0) {
             return false;
         }
-    }
 
-    public int getParentDepth(CommentDTO commentDTO) {
-        return commentRepository.findByIdx(commentDTO.getParentIdx()).getDepth();
+        Comment parentComment = commentRepository.findByIdx(commentDTO.getParentIdx());
+        if (parentComment == null || parentComment.getBoardIdx() != commentDTO.getBoardIdx()) {
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isRecommendAndNoRecommendServiceRight(Comment comment, CnuUser cnuUser) {

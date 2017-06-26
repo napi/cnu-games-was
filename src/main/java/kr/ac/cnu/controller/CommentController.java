@@ -37,7 +37,7 @@ public class CommentController {
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = " client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "/{idx}/{isRecommend}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{idx}/{isRecommend}", method = RequestMethod.PATCH)
     @ResponseStatus(HttpStatus.OK)
     public void recommendComment(@PathVariable int idx, @PathVariable boolean isRecommend) {
         CnuUser cnuUser = UserContext.getUser();
@@ -51,24 +51,25 @@ public class CommentController {
 
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{idx}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteComment(@RequestBody CommentDTO commentDTO) {
+    public void deleteComment(@PathVariable int idx) {
+        CnuUser cnuUser = UserContext.getUser();
 
-        commentService.deleteComment(commentDTO.getIdx());
+        commentService.deleteComment(idx, cnuUser);
     }
 
     //전체보기
     @CnuLogin
     @ApiImplicitParam(name = "token", value = "Facebook client access token", required = true, dataType = "string", paramType = "header", defaultValue = "")
-    @RequestMapping(value = "/{boardIdx}", method = RequestMethod.GET)
+    @RequestMapping(value = "/board/{boardIdx}", method = RequestMethod.GET)
     public List<Comment> viewEntireComment(@PathVariable("boardIdx") int boardIdx) {
-        Board board = boardRepository.findByIdx(boardIdx);
+        Board board = boardRepository.findByIdxAndIsDel(boardIdx, false);
 
         if (board == null) {
             throw new BadRequestException();
         }
 
-        return commentService.viewComment(board.getIdx());
+        return commentService.viewComment(boardIdx);
     }
 }
