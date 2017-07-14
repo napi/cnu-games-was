@@ -16,7 +16,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public synchronized CnuUser findAndCreateCnuUser(FacebookUser facebookUser) {
+    public CnuUser findCnuUser(String facebookUserId) {
+        return userRepository.findByUserId(facebookUserId);
+    }
+
+    public CnuUser findAndCreateCnuUser(FacebookUser facebookUser) {
         CnuUser cnuUser = userRepository.findByUserId(facebookUser.getUserId());
         if (cnuUser == null) {
             cnuUser = new CnuUser();
