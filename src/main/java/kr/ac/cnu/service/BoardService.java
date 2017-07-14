@@ -42,14 +42,15 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public Board updateBoard(CnuUser cnuUser, int idx, String contents) {
+    public Board updateBoard(CnuUser cnuUser, int idx, BoardDTO boardDTO) {
         Board board = boardRepository.findByIdxAndCnuUser(idx, cnuUser);
-        if(board == null || board.isDel())
+        if(board == null || board.isDel()) {
             return null;
+        }
 
-        board.setContents(contents);
+        board.setTitle(boardDTO.getTitle());
+        board.setContents(boardDTO.getContents());
         board.setUpdatedAt(new Date());
-        board.setDel(false);
 
         return boardRepository.save(board);
         

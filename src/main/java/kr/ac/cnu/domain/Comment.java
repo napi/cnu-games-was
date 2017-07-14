@@ -1,6 +1,10 @@
 package kr.ac.cnu.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -46,4 +50,11 @@ public class Comment {
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    @Override
+    public String toString() {
+        return String.format("Comment : %s", this.idx);
+    }
+
+
 }

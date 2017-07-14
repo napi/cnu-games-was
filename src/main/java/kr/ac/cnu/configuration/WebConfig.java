@@ -85,10 +85,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
                 String accessToken = nativeWebRequest.getHeader("token");
 
-                FacebookUser facebookUser = userOperator.getCnuUserFromAccessToken(accessToken);
-                CnuUser cnuUser = userService.findAndCreateCnuUser(facebookUser);
-
-                return cnuUser;
+                return userOperator.getCnuUserFromAccessToken(accessToken);
             }
         };
 
@@ -107,14 +104,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 if (((HandlerMethod)obj).hasMethodAnnotation(CnuLogin.class)) {
                     String accessToken = httpServletRequest.getHeader("token");
 
-                    FacebookUser facebookUser = userOperator.getCnuUserFromAccessToken(accessToken);
+                    CnuUser cnuUser =  userOperator.getCnuUserFromAccessToken(accessToken);
 
-                    if (facebookUser == null) {
-                        httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    if (cnuUser == null) {
+                        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         return false;
                     }
-
-                    CnuUser cnuUser = userService.findAndCreateCnuUser(facebookUser);
 
                     UserContext.setUser(cnuUser);
                 }

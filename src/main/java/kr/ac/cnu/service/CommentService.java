@@ -160,9 +160,7 @@ public class CommentService {
 
         if(!commentList.isEmpty()) {
             Collections.sort(commentList, comparator);
-            return commentList;
-        }else {
-            return null;
         }
+        return commentList;
     }
 }

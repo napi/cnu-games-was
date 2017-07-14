@@ -1,12 +1,16 @@
 package kr.ac.cnu.configuration;
 
+import kr.ac.cnu.domain.CnuUser;
 import kr.ac.cnu.domain.facebook.FacebookUser;
 import kr.ac.cnu.restclient.FacebookClient;
+import kr.ac.cnu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by rokim on 2017. 5. 31..
@@ -15,13 +19,14 @@ import org.springframework.context.annotation.Profile;
 @Slf4j
 public class WebConfigProfiles {
     @Autowired private FacebookClient facebookClient;
+    @Autowired private UserService userService;
 
     @Bean
     @Profile("!dev")
     public UserOperator facebookUserOperatorLocal() {
         return new UserOperator() {
             @Override
-            public FacebookUser getCnuUserFromAccessToken(String accessToken) {
+            public CnuUser getCnuUserFromAccessToken(String accessToken) {
                 log.info("LOCAL!!");
                 FacebookUser facebookUser = createFacebookUser(accessToken);
                 if (facebookUser == null) {
@@ -32,7 +37,8 @@ public class WebConfigProfiles {
                     facebookUser.setEmail(accessToken + "@naver.com");
                     facebookUser.setPicture(null);
                 }
-                return facebookUser;
+
+                return userService.findAndCreateCnuUser(facebookUser);
             }
         };
     }
@@ -42,9 +48,14 @@ public class WebConfigProfiles {
     public UserOperator facebookUserOperatorDev() {
         return new UserOperator() {
             @Override
-            public FacebookUser getCnuUserFromAccessToken(String accessToken) {
+            public CnuUser getCnuUserFromAccessToken(String accessToken) {
                 log.info("DEV!! : {}", accessToken);
-                return createFacebookUser(accessToken);
+                FacebookUser facebookUser = createFacebookUser(accessToken);
+                if (facebookUser == null) {
+                    return null;
+                }
+
+                return userService.findCnuUser(facebookUser.getUserId());
             }
         };
     }

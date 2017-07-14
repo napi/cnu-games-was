@@ -1,5 +1,10 @@
 package kr.ac.cnu.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -33,6 +38,7 @@ public class Board {
     private String contents;
 
     @OneToMany(mappedBy = "parentBoard")
+    @JsonIgnore
     private List<Comment> commentList;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -43,4 +49,13 @@ public class Board {
     private boolean isDel;
     private int countLike;
     private int countDisLike;
+
+    @Override
+    public String toString() {
+        return String.format("Board : %s", this.idx);
+    }
+
+    public int getCommentCount() {
+        return commentList.size();
+    }
 }
